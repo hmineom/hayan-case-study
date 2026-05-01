@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +16,12 @@
   --bg: #f3f3f3;
   --black: #1a1a1a;
   --mid: #888;
-  --border: rgba(0, 0, 0, 0.1);
+  --border: rgba(0,0,0,0.1);
   --pistachio: #b4dcc8;
   --font: 'DM Sans', sans-serif;
   --mono: 'DM Mono', monospace;
-  --nav-w: 200px;
+  --hdr: 48px;
+  --sidebar-w: 180px;
 }
 
 html { scroll-behavior: smooth; }
@@ -30,299 +32,380 @@ body {
   font-family: var(--font);
   font-size: 15px;
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
+/* Ensure fixed elements always paint on top */
+header, .sidebar, .progress-bar, .section-counter { isolation: isolate; }
+
+/* ── HEADER ── */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 200;
+  z-index: 300;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  height: 48px;
+  padding: 0 32px;
+  height: var(--hdr);
 }
 .hdr-left { display: flex; align-items: center; gap: 20px; }
 .hdr-brand { font-size: 13px; font-weight: 500; letter-spacing: 0.03em; }
-.hdr-collab { font-size: 11px; font-family: var(--mono); opacity: 0.45; letter-spacing: 0.08em; }
-.hdr-right { font-size: 11px; font-family: var(--mono); opacity: 0.45; letter-spacing: 0.08em; }
+.hdr-collab { font-size: 11px; font-family: var(--mono); opacity: 0.4; letter-spacing: 0.08em; }
+.hdr-right { font-size: 11px; font-family: var(--mono); opacity: 0.4; letter-spacing: 0.08em; }
 
-.layout { display: flex; padding-top: 48px; }
+/* ── PROGRESS ── */
+.progress-bar {
+  position: fixed;
+  top: var(--hdr);
+  left: 0;
+  height: 2px;
+  background: var(--black);
+  width: 0%;
+  z-index: 300;
+  transition: width 0.3s ease;
+}
 
+/* ── SECTION COUNTER ── */
+.section-counter {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 300;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  opacity: 0.4;
+}
+
+/* ── SIDEBAR NAV ── */
 .sidebar {
-  width: var(--nav-w);
-  flex-shrink: 0;
-  position: sticky;
-  top: 48px;
-  height: calc(100vh - 48px);
-  padding: 32px 20px;
+  position: fixed;
+  top: var(--hdr);
+  left: 0;
+  width: var(--sidebar-w);
+  height: calc(100vh - var(--hdr));
+  z-index: 250;
   border-right: 1px solid var(--border);
+  background: var(--bg);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  padding: 28px 20px;
+  gap: 0;
   overflow-y: auto;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.04);
 }
 .sidebar a {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   font-family: var(--mono);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   color: var(--black);
   text-decoration: none;
-  opacity: 0.35;
-  padding: 5px 0;
+  opacity: 0.28;
+  padding: 6px 0;
   transition: opacity 0.15s;
   text-transform: uppercase;
+  cursor: pointer;
 }
-.sidebar a:hover, .sidebar a.active { opacity: 1; }
+.sidebar a:hover { opacity: 0.6; }
+.sidebar a.active { opacity: 1; font-weight: 500; }
 
-main { flex: 1; min-width: 0; }
-
-section {
-  padding: 72px 48px;
-  border-bottom: 1px solid var(--border);
-}
-section:first-child { padding-top: 80px; }
-
-.sec-label {
-  font-size: 11px;
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.4;
-  margin-bottom: 32px;
+/* ── SNAP CONTAINER ── */
+.snap-container {
+  position: fixed;
+  top: var(--hdr);
+  left: var(--sidebar-w);
+  right: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-.sec-h2 {
-  font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin-bottom: 28px;
-  max-width: 700px;
-}
-
-.sec-body {
-  font-size: 15px;
-  line-height: 1.72;
-  font-weight: 300;
-  max-width: 620px;
-  opacity: 0.75;
-}
-
-#s-intro { padding-top: 80px; }
-.hero-title {
-  font-size: clamp(72px, 14vw, 180px);
-  font-weight: 300;
-  letter-spacing: -0.05em;
-  line-height: 0.88;
-  margin-bottom: 48px;
-}
-.explore-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--black);
-  text-decoration: none;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  padding: 10px 20px;
-  margin-bottom: 60px;
-  transition: background 0.15s, color 0.15s;
-}
-.explore-btn:hover { background: var(--black); color: var(--bg); }
-.explore-btn::after { content: '↓'; }
-
-.intro-body {
-  font-size: 18px;
-  line-height: 1.75;
-  font-weight: 300;
-  max-width: 680px;
-  margin-bottom: 40px;
-  opacity: 0.8;
-}
-
-.img-ph {
-  background: #ddd;
-  background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px);
+/* ── PANELS ── */
+.panel {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: calc(100vh - var(--hdr));
+  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  overflow: hidden;
+}
+
+/* ── PANEL INNER ── */
+.panel-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 52px 72px 48px;
+  overflow: hidden;
+}
+
+/* Section label */
+.sec-label {
+  font-size: 10px;
   font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.3);
-  position: relative;
-}
-.img-ph.dark {
-  background: #1a1a1a;
-  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 1px, transparent 1px, transparent 8px);
-  color: rgba(255, 255, 255, 0.25);
-}
-.img-ph.mint {
-  background: var(--pistachio);
-  background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.04), rgba(0,0,0,0.04) 1px, transparent 1px, transparent 8px);
-  color: rgba(0, 0, 0, 0.4);
+  opacity: 0.38;
+  margin-bottom: 28px;
+  flex-shrink: 0;
 }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
-.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2px; }
+/* Section heading */
+.sec-h2 {
+  font-size: clamp(24px, 3vw, 42px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  margin-bottom: 24px;
+  max-width: 700px;
+  flex-shrink: 0;
+}
 
-.palette-section { margin: 40px 0; }
-.palette-label {
+/* Body text */
+.sec-body {
+  font-size: 15px;
+  line-height: 1.75;
+  font-weight: 300;
+  max-width: 600px;
+  opacity: 0.72;
+}
+.sec-body + .sec-body { margin-top: 14px; }
+
+/* ── PANEL VARIANTS ── */
+
+/* Hero panel */
+.panel--hero { background: var(--bg); }
+.panel--hero .panel-inner { justify-content: flex-end; padding-bottom: 64px; }
+.hero-title {
+  font-size: clamp(100px, 20vw, 220px);
+  font-weight: 300;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  margin-bottom: 40px;
+  flex-shrink: 0;
+}
+.hero-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 300;
+  max-width: 480px;
+  opacity: 0.65;
+}
+.scroll-hint {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.45;
-  margin-bottom: 12px;
+  opacity: 0.35;
   display: flex;
   align-items: center;
   gap: 8px;
-}
-.palette-label::before {
-  content: '';
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  background: var(--pistachio);
-  border-radius: 50%;
   flex-shrink: 0;
 }
+.scroll-hint::after { content: '↓'; font-size: 14px; }
+
+/* Dark panel */
+.panel--dark { background: var(--black); color: var(--bg); }
+.panel--dark .sec-label { color: var(--bg); }
+.panel--dark .sec-h2 { color: var(--bg); }
+.panel--dark .sec-body { color: var(--bg); }
+.panel--dark .border-line { border-color: rgba(255,255,255,0.1); }
+
+/* Mint panel */
+.panel--mint { background: var(--pistachio); }
+
+/* Split layout */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  gap: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+.split-text {
+  padding: 52px 56px 48px 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.split-visual {
+  overflow: hidden;
+  position: relative;
+}
+.split-visual .img-ph,
+.split-visual img,
+.split-visual video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Full-bleed image panel */
+.panel--image {
+  position: relative;
+}
+.panel--image .img-ph,
+.panel--image img,
+.panel--image video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.panel--image .caption {
+  position: absolute;
+  bottom: 32px;
+  left: 48px;
+  right: 48px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  z-index: 2;
+}
+.panel--image.panel--dark .caption { color: var(--bg); }
+
+/* Text-dominant centered panel */
+.panel--centered .panel-inner {
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Stats panel */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 32px;
+  flex-shrink: 0;
+}
+.stat-block {
+  padding: 32px 32px 32px 0;
+  border-right: 1px solid var(--border);
+}
+.stat-block:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
+.stat-block:first-child { padding-left: 0; }
+.stat-num {
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+/* Palette row */
 .palette-row {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 0;
-  margin-bottom: 4px;
-  max-width: 600px;
+  height: 80px;
+  margin-top: 28px;
+  flex-shrink: 0;
+  max-width: 500px;
 }
 .swatch {
-  aspect-ratio: 1;
+  position: relative;
   display: flex;
   align-items: flex-end;
-  padding: 8px;
-  position: relative;
+  padding: 6px;
 }
 .swatch-hex {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0,0,0,0.45);
   line-height: 1.2;
 }
-.swatch.light-text .swatch-hex { color: rgba(255, 255, 255, 0.6); }
+.swatch.light-text .swatch-hex { color: rgba(255,255,255,0.5); }
 
+/* Logo display */
 .logo-display {
-  background: var(--bg);
-  aspect-ratio: 16/9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(48px, 8vw, 96px);
+  font-size: clamp(56px, 10vw, 120px);
   font-weight: 300;
   letter-spacing: -0.04em;
-  border: 1px solid var(--border);
-  margin: 24px 0;
+  opacity: 0.85;
+  margin-top: 16px;
+  flex-shrink: 0;
 }
 
-.subsec { margin-top: 56px; }
-.subsec-label {
-  font-size: 11px;
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.35;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  margin: 40px 0;
-  max-width: 700px;
-}
-.stat-num {
-  font-size: clamp(40px, 5vw, 64px);
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.stat-label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.5;
-}
-
+/* Retail grid */
 .retail-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1px;
   background: var(--border);
-  margin: 24px 0;
-  max-width: 800px;
+  margin-top: 28px;
+  flex-shrink: 0;
 }
 .retail-cell {
   background: var(--bg);
-  aspect-ratio: 5/2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 14px 10px;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  opacity: 0.6;
+  opacity: 0.55;
   text-align: center;
-  padding: 8px;
 }
 
+/* Quote cards */
 .quote-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin: 32px 0;
-  max-width: 900px;
+  gap: 16px;
+  margin-top: 28px;
+  flex-shrink: 0;
+  max-width: 700px;
 }
 .quote-card {
   border: 1px solid var(--border);
-  padding: 24px;
+  padding: 20px 24px;
 }
 .quote-text {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 300;
   line-height: 1.4;
   letter-spacing: -0.01em;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .quote-trans {
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  opacity: 0.5;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  opacity: 0.45;
 }
 
+/* Summary table */
 .summary-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  max-width: 900px;
+  margin-top: 28px;
 }
 .summary-table th {
   text-align: left;
@@ -330,34 +413,111 @@ section:first-child { padding-top: 80px; }
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  opacity: 0.4;
+  opacity: 0.35;
   border-bottom: 1px solid var(--border);
-  padding: 10px 16px;
+  padding: 8px 16px;
   font-weight: 400;
 }
 .summary-table td {
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+  font-size: 13px;
+  line-height: 1.5;
 }
 .summary-table tr:last-child td { border-bottom: none; }
-.tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
 .tag {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--border);
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 4px 10px;
+  font-size: 11px;
   font-family: var(--mono);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
-footer {
-  padding: 48px;
-  border-top: 1px solid var(--border);
+/* Image placeholder */
+.img-ph {
+  background: #ddd;
+  background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.3);
+  width: 100%;
+  height: 100%;
+}
+.img-ph.dark {
+  background: #2a2a2a;
+  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px);
+  color: rgba(255,255,255,0.25);
+}
+.img-ph.mint {
+  background: #c8e8d8;
+  background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.04), rgba(0,0,0,0.04) 1px, transparent 1px, transparent 8px);
+  color: rgba(0,0,0,0.35);
+}
+
+/* Scrolling image strip (horizontal) */
+.img-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.img-strip > * { height: 100%; }
+
+/* Grid 2 within a panel */
+.grid-2-fill {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.grid-2-fill > * { height: 100%; }
+
+/* Vertical stack for text + visual within centered panel */
+.text-then-visual {
+  flex: 1;
+  min-height: 0;
+  margin-top: 28px;
+  overflow: hidden;
+}
+
+/* Panel border bottom */
+.panel-border { border-bottom: 1px solid var(--border); }
+
+/* ── REVEAL ANIMATIONS ── */
+.r {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.r.in { opacity: 1; transform: none; }
+.r.d1 { transition-delay: 0.08s; }
+.r.d2 { transition-delay: 0.16s; }
+.r.d3 { transition-delay: 0.24s; }
+.r.d4 { transition-delay: 0.32s; }
+
+/* ── FOOTER PANEL ── */
+.panel--footer {
+  height: calc(100vh - var(--hdr));
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 72px;
+  border-top: 1px solid var(--border);
 }
 .footer-copy {
   font-family: var(--mono);
@@ -366,27 +526,26 @@ footer {
   letter-spacing: 0.08em;
 }
 
-.r {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.r.in { opacity: 1; transform: none; }
-.r.d1 { transition-delay: 0.08s; }
-.r.d2 { transition-delay: 0.16s; }
-
+/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .sidebar { display: none; }
-  section { padding: 48px 24px; }
-  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
-  .quote-grid { grid-template-columns: 1fr; }
+  .snap-container { left: 0; }
+  .panel-inner { padding: 40px 28px 36px; }
+  .split { grid-template-columns: 1fr; }
+  .split-text { padding: 36px 28px 24px; }
+  .split-visual { height: 45vh; }
   .stats-row { grid-template-columns: 1fr; }
-  .retail-grid { grid-template-columns: repeat(2, 1fr); }
+  .retail-grid { grid-template-columns: repeat(3, 1fr); }
+  .quote-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: clamp(72px, 18vw, 160px); }
+  .img-strip { grid-template-columns: 1fr 1fr; }
+  .panel--footer { padding: 0 28px; flex-direction: column; justify-content: center; gap: 12px; }
 }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="hdr-left">
     <div class="hdr-brand">HAYAN</div>
@@ -395,129 +554,116 @@ footer {
   <div class="hdr-right">2021</div>
 </header>
 
-<div class="layout">
+<!-- PROGRESS -->
+<div class="progress-bar" id="progressBar"></div>
 
-  <nav class="sidebar" id="sidebar">
-    <a href="#s-intro" class="active">Intro</a>
-    <a href="#s-brief">The brief</a>
-    <a href="#s-problem">The problem</a>
-    <a href="#s-material">Material</a>
-    <a href="#s-product">Product</a>
-    <a href="#s-cmf">CMF</a>
-    <a href="#s-logo">Logo</a>
-    <a href="#s-identity">Identity</a>
-    <a href="#s-packaging">Packaging</a>
-    <a href="#s-system">System</a>
-    <a href="#s-outcome">Outcome</a>
-    <a href="#s-summary">Summary</a>
-  </nav>
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <a href="#" data-target="s-intro" class="active">Intro</a>
+  <a href="#" data-target="s-brief">The brief</a>
+  <a href="#" data-target="s-problem">The problem</a>
+  <a href="#" data-target="s-material">Material</a>
+  <a href="#" data-target="s-product">Product</a>
+  <a href="#" data-target="s-cmf">CMF</a>
+  <a href="#" data-target="s-logo">Logo</a>
+  <a href="#" data-target="s-identity">Identity</a>
+  <a href="#" data-target="s-photography">Photography</a>
+  <a href="#" data-target="s-packaging">Packaging</a>
+  <a href="#" data-target="s-system">System</a>
+  <a href="#" data-target="s-outcome">Outcome</a>
+  <a href="#" data-target="s-reception">Reception</a>
+  <a href="#" data-target="s-summary">Summary</a>
+</nav>
 
-  <main>
+<!-- SECTION COUNTER -->
+<div class="section-counter" id="sectionCounter">01 / 15</div>
 
-    <!-- 01 INTRO -->
-    <section id="s-intro">
+<!-- SNAP CONTAINER -->
+<div class="snap-container" id="snapContainer">
+
+  <!-- 01 HERO -->
+  <div class="panel panel--hero" data-label="Intro" data-section="s-intro">
+    <div class="panel-inner" style="justify-content:flex-end; padding-bottom:64px;">
       <h1 class="hero-title r">HAYAN</h1>
-      <a href="#s-brief" class="explore-btn r d1">Explore</a>
-      <p class="intro-body r d1">
-        A sustainable lifestyle brand. Its first product is a biodegradable toothbrush, not because the brand is about toothbrushes, but because the toothbrush is one of the most overlooked objects in the daily ritual of waste.
-      </p>
-      <p class="intro-body r d2">
-        In Korea alone, 200 million toothbrushes are produced each year. None get recycled.
-      </p>
-      <div class="img-ph mint r" style="height:60vh;min-height:400px;margin-top:32px">
-        <span>Hero — adult + kids toothbrush in pistachio mint, bathroom counter</span>
+      <div class="hero-meta">
+        <p class="hero-desc r d1">
+          A sustainable lifestyle brand. Its first product is a biodegradable toothbrush — not because the brand is about toothbrushes, but because the toothbrush is one of the most overlooked objects in the daily ritual of waste.
+        </p>
+        <span class="scroll-hint r d2">Scroll</span>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- 02 THE BRIEF -->
-    <section id="s-brief">
-      <div class="sec-label r">The brief, and the reframe</div>
-      <h2 class="sec-h2 r">They came for a toothbrush. I gave them a brand.</h2>
-      <p class="sec-body r">
-        Econnect came to me to design a PLA toothbrush.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        I could have just designed the product. But the material and manufacturing meant the toothbrush would have to sell at a higher price than the bamboo alternatives already on shelf. A higher price needed a reason. Without a brand to give it one, it would land as another eco-friendly product with the same apologetic vibes as everything else.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        So I proposed building a brand around a different idea. Choosing sustainability doesn't mean giving up on aesthetics. The product could earn its price by being something people actually wanted to own.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        Econnect agreed.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        I came on as co-founder, leading creative direction end-to-end.
-      </p>
-    </section>
+  <!-- 02 THE BRIEF — split -->
+  <div class="panel" data-label="The brief" data-section="s-brief" style="flex-direction:row; overflow:hidden;">
+    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
+      <div class="split-text">
+        <div class="sec-label r">The brief, and the reframe</div>
+        <h2 class="sec-h2 r">They came for a toothbrush. I gave them a brand.</h2>
+        <p class="sec-body r d1">Econnect came to me to design a PLA toothbrush. I could have just designed the product. But PLA meant a higher price than bamboo alternatives already on shelf. A higher price needed a reason.</p>
+        <p class="sec-body r d2" style="margin-top:14px;">Without a brand to give it one, it would land as another eco-friendly product with the same apologetic vibes as everything else. So I proposed building a brand around a different idea: sustainability without compromise.</p>
+        <p class="sec-body r d3" style="margin-top:14px; opacity:0.9; font-style:italic;">Econnect agreed. I came on as co-founder, leading creative direction end-to-end.</p>
+      </div>
+      <div class="split-visual" style="border-left:1px solid var(--border);">
+        <div class="img-ph mint">Hero — product in context</div>
+      </div>
+    </div>
+  </div>
 
-    <!-- 03 THE PROBLEM -->
-    <section id="s-problem">
+  <!-- 03 PROBLEM — text above, video below -->
+  <div class="panel panel--dark" data-label="The problem" data-section="s-problem">
+    <div style="padding:52px 72px 32px; flex-shrink:0;">
       <div class="sec-label r">The problem</div>
-      <h2 class="sec-h2 r">The category had a ceiling.</h2>
-      <p class="sec-body r">
-        Bamboo handles, muted palettes, design that signaled virtue instead of desire. Eco-friendly toothbrushes never tried to appeal beyond the people who already cared.
-      </p>
-        <video class="r" autoplay loop muted playsinline style="width:100%; aspect-ratio:16/9; object-fit:cover; margin-top:32px; display:block;">
+      <h2 class="sec-h2 r" style="color:var(--bg); font-size:clamp(22px,3vw,38px); max-width:700px;">The category had a ceiling.</h2>
+      <p class="sec-body r d1" style="color:var(--bg); opacity:0.5; margin-top:16px; max-width:580px;">Bamboo handles, muted palettes, design that signaled virtue instead of desire. Eco-friendly toothbrushes never tried to appeal beyond the people who already cared.</p>
+    </div>
+    <div style="flex:1; min-height:0; margin:0; overflow:hidden;">
+      <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
         <source src="videos/problem-bamboo.mp4" type="video/mp4">
+        <div class="img-ph dark" style="height:100%;width:100%;">Video — bamboo product category</div>
       </video>
-    </section>
+    </div>
+  </div>
 
-    <!-- 04 MATERIAL (with insight merged) -->
-    <section id="s-material">
-      <div class="sec-label r">The material</div>
-      <h2 class="sec-h2 r">A sustainable object that doesn't announce its sustainability.</h2>
-      <p class="sec-body r">
-        The category's problem wasn't really material. It was positioning. But the right material could quietly solve both.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        PLA, a corn-based bioplastic, decomposes in 6 to 12 months versus 500+ years for conventional plastic. 70% less carbon in manufacturing. Higher elasticity than conventional plastic, which is actually a functional advantage in toothbrush manufacturing.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        And critically, PLA doesn't absorb moisture the way bamboo does. Bamboo's mold problem, gone. The material itself solved the friction that made bamboo feel like a daily compromise.
-      </p>
-      <div class="grid-2 r" style="margin-top:32px">
-        <img src="images/material1.jpg" alt="PLA pellets" style="aspect-ratio:1/1; object-fit:cover; width:100%;">
-        <img src="images/material2.jpg" alt="PLA pellets" style="aspect-ratio:1/1; object-fit:cover; width:100%;">
-    </section>
+  <!-- 04 MATERIAL — split -->
+  <div class="panel" data-label="Material" data-section="s-material" style="flex-direction:row; overflow:hidden;">
+    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
+      <div class="split-visual" style="border-right:1px solid var(--border);">
+        <div class="img-ph">PLA material / pellets</div>
+      </div>
+      <div class="split-text">
+        <div class="sec-label r">The material</div>
+        <h2 class="sec-h2 r">A sustainable object that doesn't announce its sustainability.</h2>
+        <p class="sec-body r d1">PLA, a corn-based bioplastic, decomposes in 6–12 months vs 500+ years for conventional plastic. 70% less carbon in manufacturing. Higher elasticity — actually a functional advantage in toothbrush production.</p>
+        <p class="sec-body r d2" style="margin-top:14px;">And critically, PLA doesn't absorb moisture the way bamboo does. Bamboo's mold problem, gone. The material solved the friction that made bamboo feel like a daily compromise.</p>
+      </div>
+    </div>
+  </div>
 
-    <!-- 05 PRODUCT DESIGN -->
-    <section id="s-product">
+  <!-- 05 PRODUCT DESIGN — centered with full visual -->
+  <div class="panel panel--dark" data-label="Product" data-section="s-product">
+    <div class="panel-inner" style="padding-bottom:0; padding-right:0; overflow:hidden; flex:1;">
       <div class="sec-label r">Product design</div>
-      <h2 class="sec-h2 r">Form driven by experience.</h2>
-      <p class="sec-body r">
-        Handle angled toward the bristle head for easier reach to back molars. Bristle count increased from 1,000 to 2,500 for a denser, softer brush. Children's version rounded to encourage lighter pressure, designed with how kids actually grip, not against it.
-      </p>
-      <div class="img-ph dark r" style="height:60vh;min-height:400px;margin-top:32px">
-        <span>Hero product render — adult toothbrush, side profile</span>
-      </div>
-      <div class="grid-4 r" style="margin-top:2px">
-        <div class="img-ph" style="aspect-ratio:1"><span>Handle profile</span></div>
-        <div class="img-ph" style="aspect-ratio:1"><span>Bristle close-up</span></div>
-        <div class="img-ph" style="aspect-ratio:1"><span>Adult vs kids</span></div>
-        <div class="img-ph" style="aspect-ratio:1"><span>Kids' rounded form</span></div>
-      </div>
-    </section>
+      <h2 class="sec-h2 r" style="color:var(--bg);">Form driven by experience.</h2>
+      <p class="sec-body r d1" style="color:var(--bg); opacity:0.55; margin-bottom:28px;">Handle angled toward the bristle head for easier reach. Bristle count increased from 1,000 to 2,500. Children's version rounded to encourage lighter pressure.</p>
+    </div>
+    <div class="img-strip" style="padding:0 0 0 72px; gap:2px; flex:1; min-height:0; overflow:hidden; padding-left:72px; padding-bottom:0;">
+      <div class="img-ph dark">Handle profile</div>
+      <div class="img-ph dark">Bristle close-up</div>
+      <div class="img-ph dark">Adult vs kids</div>
+      <div class="img-ph dark">Kids' form</div>
+    </div>
+  </div>
 
-    <!-- 06 CMF -->
-    <section id="s-cmf">
-      <div class="sec-label r">CMF</div>
-      <h2 class="sec-h2 r">Pistachio mint, not earth tones.</h2>
-      <p class="sec-body r">
-        The color was the most deliberate choice.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        Eco products at the time leaned earthy. Muted browns, soft beiges, apologetic greens. HAYAN went the other direction. A pistachio mint that doesn't read as "eco." It reads as home.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        A toothbrush sits on the counter, visible every day. Most users hide theirs in cups or drawers because they're not objects worth displaying. HAYAN was designed to be left out. Something you'd be quietly proud to have on the counter.
-      </p>
-      <p class="sec-body r" style="margin-top:16px">
-        The pistachio also did commercial work. Adult and kids' toothbrushes shipped in the same color at launch. A household system, not a single SKU. Families bought multiples. Couples bought pairs.
-      </p>
-
-      <div class="palette-section r">
-        <div class="palette-label">Launch palette</div>
-        <div class="palette-row">
+  <!-- 06 CMF — split with palette -->
+  <div class="panel panel--mint" data-label="CMF" data-section="s-cmf" style="flex-direction:row; overflow:hidden;">
+    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
+      <div class="split-text">
+        <div class="sec-label r">CMF</div>
+        <h2 class="sec-h2 r">Pistachio mint, not earth tones.</h2>
+        <p class="sec-body r d1">Eco products leaned earthy. HAYAN went the other direction. A pistachio mint that doesn't read as "eco." It reads as home.</p>
+        <p class="sec-body r d2" style="margin-top:14px;">A toothbrush sits on the counter every day. Most users hide theirs. HAYAN was designed to be left out. Something you'd be quietly proud to have on the counter.</p>
+        <div class="palette-row r d3">
           <div class="swatch" style="background:#b4dcc8"><span class="swatch-hex">#B4DCC8</span></div>
           <div class="swatch" style="background:#e8e8e0"><span class="swatch-hex">#E8E8E0</span></div>
           <div class="swatch" style="background:#f3f3f3"><span class="swatch-hex">#F3F3F3</span></div>
@@ -526,191 +672,151 @@ footer {
           <div class="swatch" style="background:#c8d8d0"><span class="swatch-hex">#C8D8D0</span></div>
         </div>
       </div>
-
-      <div class="img-ph mint r" style="height:60vh;min-height:400px;margin-top:32px">
-        <span>Mood shot — pistachio dominant, styled bathroom counter</span>
+      <div class="split-visual" style="border-left:1px solid rgba(0,0,0,0.1);">
+        <div class="img-ph mint" style="background:#a8d4bc;">Styled bathroom counter</div>
       </div>
-      <div class="grid-2 r" style="margin-top:2px">
-        <div class="img-ph mint" style="aspect-ratio:4/3"><span>Adult + kids together</span></div>
-        <div class="img-ph mint" style="aspect-ratio:4/3"><span>Lifestyle detail</span></div>
-      </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- 07 LOGO -->
-    <section id="s-logo">
+  <!-- 07 LOGO -->
+  <div class="panel" data-label="Logo" data-section="s-logo">
+    <div class="panel-inner" style="justify-content:center;">
       <div class="sec-label r">Logo</div>
       <h2 class="sec-h2 r">A wordmark that whispers.</h2>
-      <p class="sec-body r">
-        Soft, lowercase, considered. The mark sits comfortably on a bathroom counter without competing for attention. Designed to belong to the object, not announce it.
-      </p>
-      <div class="logo-display r">hayan</div>
-      <div class="grid-2 r">
-        <div class="img-ph" style="aspect-ratio:4/3"><span>Logo on packaging</span></div>
-        <div class="img-ph" style="aspect-ratio:4/3"><span>Logo at small scale</span></div>
-      </div>
-    </section>
+      <p class="sec-body r d1" style="max-width:520px;">Soft, lowercase, considered. The mark sits comfortably on a bathroom counter without competing for attention. Designed to belong to the object, not announce it.</p>
+      <div class="logo-display r d2">hayan</div>
+    </div>
+  </div>
 
-    <!-- 08 IDENTITY (with photography folded in) -->
-    <section id="s-identity">
-      <div class="sec-label r">Brand identity</div>
-      <h2 class="sec-h2 r">A brand world that feels like home.</h2>
-      <p class="sec-body r">
-        Typography, color, voice, and photography. All built to feel domestic and considered, not eco-coded.
-      </p>
+  <!-- 08 IDENTITY — full panel image + caption -->
+  <div class="panel panel--image" data-label="Identity" data-section="s-identity">
+    <div class="img-ph" style="background:#e8e8e4;">Brand specimen — type, color, applications</div>
+    <div class="caption">Brand identity — typography, color system, voice</div>
+  </div>
 
-      <div class="img-ph r" style="height:60vh;min-height:400px;margin-top:32px">
-        <span>Brand specimen — type lockup, color palette, applications</span>
-      </div>
+  <!-- 09 PHOTOGRAPHY — grid fill -->
+  <div class="panel" data-label="Photography" data-section="s-photography" style="overflow:hidden;">
+    <div class="panel-inner" style="padding-bottom:16px; flex-shrink:0;">
+      <div class="sec-label r">Photography direction</div>
+      <h2 class="sec-h2 r">Soft light. Warm homes. Nothing staged for an eco campaign.</h2>
+    </div>
+    <div style="flex:1; min-height:0; display:grid; grid-template-columns:2fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:2px; overflow:hidden; padding:0 72px 48px;">
+      <div class="img-ph" style="grid-row:1/3;">Photography 01 — hero</div>
+      <div class="img-ph">Photography 02</div>
+      <div class="img-ph">Photography 03</div>
+      <div class="img-ph">Photography 04</div>
+      <div class="img-ph">Photography 05</div>
+    </div>
+  </div>
 
-      <div class="subsec r">
-        <div class="subsec-label">Photography</div>
-        <p class="sec-body r" style="margin-bottom:24px">
-          I art-directed the launch photography to extend the brand world beyond the object. Soft natural light, warm domestic settings, and quiet compositions. The photography places HAYAN in homes that feel lived in, not styled for an eco campaign.
-        </p>
+  <!-- 10 PACKAGING — split -->
+  <div class="panel" data-label="Packaging" data-section="s-packaging" style="flex-direction:row; overflow:hidden;">
+    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
+      <div class="split-visual" style="border-right:1px solid var(--border);">
+        <div class="img-ph">Hero packaging — "I'm not plastic."</div>
       </div>
+      <div class="split-text">
+        <div class="sec-label r">Packaging</div>
+        <h2 class="sec-h2 r">Bold message, refined material.</h2>
+        <p class="sec-body r d1">Eco packaging whispered. HAYAN announced itself. <em>I'm not plastic.</em> in oversized type on uncoated kraft. Confidence without loudness.</p>
+        <p class="sec-body r d2" style="margin-top:14px;">The packaging was a brand statement before the product was ever touched. Shelf presence in a category that had none.</p>
+      </div>
+    </div>
+  </div>
 
-      <div class="img-ph r" style="height:65vh;min-height:440px;margin-bottom:2px">
-        <span>Photography 01 — hero, full-bleed</span>
-      </div>
-
-      <div class="grid-2 r" style="margin-bottom:2px">
-        <div class="img-ph" style="aspect-ratio:4/5"><span>Photography 02</span></div>
-        <div class="img-ph" style="aspect-ratio:4/5"><span>Photography 03</span></div>
-      </div>
-
-      <div class="grid-3 r" style="margin-bottom:2px">
-        <div class="img-ph" style="aspect-ratio:1"><span>Photography 04</span></div>
-        <div class="img-ph" style="aspect-ratio:1"><span>Photography 05</span></div>
-        <div class="img-ph" style="aspect-ratio:1"><span>Photography 06</span></div>
-      </div>
-
-      <div class="img-ph r" style="height:55vh;min-height:380px;margin-bottom:2px">
-        <span>Photography 07 — atmosphere, full-width</span>
-      </div>
-
-      <div class="grid-4 r">
-        <div class="img-ph" style="aspect-ratio:3/4"><span>Photography 08</span></div>
-        <div class="img-ph" style="aspect-ratio:3/4"><span>Photography 09</span></div>
-        <div class="img-ph" style="aspect-ratio:3/4"><span>Photography 10</span></div>
-        <div class="img-ph" style="aspect-ratio:3/4"><span>Photography 11</span></div>
-      </div>
-    </section>
-
-    <!-- 09 PACKAGING -->
-    <section id="s-packaging">
-      <div class="sec-label r">Packaging</div>
-      <h2 class="sec-h2 r">Bold message, refined material.</h2>
-      <p class="sec-body r">
-        Eco packaging whispered. HAYAN announced itself, <em>I'm not plastic.</em>, in oversized type on uncoated kraft. Confidence without loudness.
-      </p>
-      <div class="img-ph r" style="height:60vh;min-height:400px;margin-top:32px">
-        <span>Hero packaging shot — "I'm not plastic."</span>
-      </div>
-      <div class="grid-3 r" style="margin-top:2px">
-        <div class="img-ph" style="aspect-ratio:4/3"><span>Kraft material detail</span></div>
-        <div class="img-ph" style="aspect-ratio:4/3"><span>Typography close-up</span></div>
-        <div class="img-ph" style="aspect-ratio:4/3"><span>Shelf comparison</span></div>
-      </div>
-    </section>
-
-    <!-- 10 SYSTEM -->
-    <section id="s-system">
+  <!-- 11 SYSTEM -->
+  <div class="panel panel--dark" data-label="System" data-section="s-system">
+    <div class="panel-inner" style="justify-content:center;">
       <div class="sec-label r">The system</div>
-      <h2 class="sec-h2 r">A product designed to come back.</h2>
-      <p class="sec-body r">
-        QR code on the packaging links to a return service. Used toothbrushes get mailed back. Subscription handles replenishment. The brand owns the full lifecycle.
-      </p>
-      <div class="img-ph r" style="height:55vh;min-height:380px;margin-top:32px">
-        <span>Lifecycle diagram — Buy → Use → Return → Recycle</span>
+      <h2 class="sec-h2 r" style="color:var(--bg);">A product designed to come back.</h2>
+      <p class="sec-body r d1" style="color:var(--bg); opacity:0.55; margin-bottom:32px;">QR code on packaging links to a return service. Used toothbrushes get mailed back. Subscription handles replenishment. The brand owns the full lifecycle.</p>
+      <div class="r d2" style="display:flex; gap:0; align-items:center; max-width:620px;">
+        <div style="flex:1; text-align:center; padding:20px; border:1px solid rgba(255,255,255,0.15); font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5);">Buy</div>
+        <div style="color:rgba(255,255,255,0.2); padding:0 8px; font-size:12px;">→</div>
+        <div style="flex:1; text-align:center; padding:20px; border:1px solid rgba(255,255,255,0.15); font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5);">Use</div>
+        <div style="color:rgba(255,255,255,0.2); padding:0 8px; font-size:12px;">→</div>
+        <div style="flex:1; text-align:center; padding:20px; border:1px solid rgba(255,255,255,0.15); font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5);">Return</div>
+        <div style="color:rgba(255,255,255,0.2); padding:0 8px; font-size:12px;">→</div>
+        <div style="flex:1; text-align:center; padding:20px; border:1px solid rgba(255,255,255,0.15); font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5);">Recycle</div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- 11 OUTCOME -->
-    <section id="s-outcome">
+  <!-- 12 OUTCOME — stats -->
+  <div class="panel" data-label="Outcome" data-section="s-outcome">
+    <div class="panel-inner">
       <div class="sec-label r">Outcome</div>
       <h2 class="sec-h2 r">The brand earned its sales without buying them.</h2>
-
-      <div class="stats-row r">
-        <div>
+      <div class="stats-row r d1">
+        <div class="stat-block">
           <div class="stat-num">1,495%</div>
           <div class="stat-label">of crowdfunding goal</div>
         </div>
-        <div>
+        <div class="stat-block">
           <div class="stat-num">285</div>
           <div class="stat-label">launch backers</div>
         </div>
-        <div>
+        <div class="stat-block">
           <div class="stat-num">15+</div>
           <div class="stat-label">retail partners</div>
         </div>
       </div>
+      <div class="retail-grid r d2">
+        <div class="retail-cell">DDP Design Store</div>
+        <div class="retail-cell">MTL</div>
+        <div class="retail-cell">OBSCURA</div>
+        <div class="retail-cell">PARSNIPS</div>
+        <div class="retail-cell">MUSINSA</div>
+        <div class="retail-cell">29CM</div>
+        <div class="retail-cell">KAKAO Gift</div>
+        <div class="retail-cell">Shinsegae DF</div>
+        <div class="retail-cell">Ananti</div>
+        <div class="retail-cell">Hotel POCO</div>
+        <div class="retail-cell">Hyundai M Mall</div>
+        <div class="retail-cell">Breeze Archive</div>
+      </div>
+    </div>
+  </div>
 
-      <div class="subsec r">
-        <div class="subsec-label">Retail</div>
-        <div class="retail-grid">
-          <div class="retail-cell">DDP Design Store</div>
-          <div class="retail-cell">MTL</div>
-          <div class="retail-cell">OBSCURA</div>
-          <div class="retail-cell">PARSNIPS</div>
-          <div class="retail-cell">MUSINSA</div>
-          <div class="retail-cell">29CM</div>
-          <div class="retail-cell">KAKAO Gift</div>
-          <div class="retail-cell">Shinsegae DF</div>
-          <div class="retail-cell">Ananti</div>
-          <div class="retail-cell">Hotel POCO</div>
-          <div class="retail-cell">Hyundai M Mall</div>
-          <div class="retail-cell">Breeze Archive</div>
+  <!-- 13 PRESS + QUOTES -->
+  <div class="panel" data-label="Reception" data-section="s-reception">
+    <div class="panel-inner">
+      <div class="sec-label r">What customers said</div>
+      <h2 class="sec-h2 r">The deepest signal: customers changed how they saw their homes.</h2>
+      <div class="quote-grid r d1">
+        <div class="quote-card">
+          <div class="quote-text">"인생칫솔."</div>
+          <div class="quote-trans">The toothbrush of my life.</div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-text">"Hay, Vitra 같은 브랜드 느낌."</div>
+          <div class="quote-trans">Feels like a Hay or Vitra brand.</div>
         </div>
       </div>
+      <p class="sec-body r d2" style="margin-top:28px; max-width:560px;">The toothbrush was the entry point. The shift in how people thought about other everyday objects in their homes — that was the goal.</p>
+    </div>
+  </div>
 
-      <div class="subsec r">
-        <div class="subsec-label">Press</div>
-        <div class="grid-2">
-          <div class="img-ph" style="aspect-ratio:4/3"><span>Hypebae feature</span></div>
-          <div class="img-ph" style="aspect-ratio:4/3"><span>DDP Design Store profile</span></div>
-        </div>
-      </div>
-
-      <div class="subsec r">
-        <div class="subsec-label">What customers said</div>
-        <div class="quote-grid">
-          <div class="quote-card">
-            <div class="quote-text">"인생칫솔."</div>
-            <div class="quote-trans">The toothbrush of my life.</div>
-          </div>
-          <div class="quote-card">
-            <div class="quote-text">"Hay, Vitra 같은 브랜드 느낌."</div>
-            <div class="quote-trans">Feels like a Hay or Vitra brand.</div>
-          </div>
-        </div>
-        <p class="sec-body r" style="margin-top:32px">
-          The deepest signal. Customers said HAYAN changed how they thought about <em>other</em> everyday objects in their homes. The toothbrush was the entry point. The shift was the goal.
-        </p>
-      </div>
-    </section>
-
-    <!-- 12 SUMMARY -->
-    <section id="s-summary">
+  <!-- 14 SUMMARY -->
+  <div class="panel" data-label="Summary" data-section="s-summary">
+    <div class="panel-inner" style="overflow-y:auto;">
       <div class="sec-label r">Summary</div>
-      <p class="sec-body r" style="margin-bottom:48px">
-        HAYAN began with a product brief and ended as a brand built around a single belief. Caring for the planet shouldn't feel like a compromise. The toothbrush was the entry point. The shift in everyday consciousness was the goal.
-      </p>
-
-      <table class="summary-table r">
+      <p class="sec-body r" style="max-width:580px; margin-bottom:24px; font-style:italic; opacity:0.65;">HAYAN began with a product brief and ended as a brand built around a single belief: caring for the planet shouldn't feel like a compromise.</p>
+      <table class="summary-table r d1">
         <thead>
           <tr><th>Category</th><th>Detail</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-family:var(--mono);font-size:12px;opacity:0.55;width:160px">Role</td>
+            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;width:140px;">Role</td>
             <td>Co-founder · Design Director</td>
           </tr>
           <tr>
-            <td style="font-family:var(--mono);font-size:12px;opacity:0.55">Year</td>
+            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Year</td>
             <td>2021</td>
           </tr>
           <tr>
-            <td style="font-family:var(--mono);font-size:12px;opacity:0.55">Scope</td>
+            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Scope</td>
             <td>
               <div class="tag-row">
                 <span class="tag">Brand strategy</span>
@@ -724,52 +830,94 @@ footer {
             </td>
           </tr>
           <tr>
-            <td style="font-family:var(--mono);font-size:12px;opacity:0.55">Partner</td>
+            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Partner</td>
             <td>Econnect (manufacturing & operations)</td>
           </tr>
           <tr>
-            <td style="font-family:var(--mono);font-size:12px;opacity:0.55">Closing</td>
-            <td style="font-style:italic;opacity:0.7">Sustainability without compromise. Beauty without apology.</td>
+            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Closing</td>
+            <td style="font-style:italic;opacity:0.6;">Sustainability without compromise. Beauty without apology.</td>
           </tr>
         </tbody>
       </table>
-    </section>
+    </div>
+  </div>
 
-    <footer>
-      <div class="footer-copy">© 2025 Hye Min Eom</div>
-      <div class="footer-copy">All rights reserved</div>
-    </footer>
+  <!-- 15 FOOTER -->
+  <div class="panel--footer" data-label="End">
+    <div class="footer-copy">© 2025 Hye Min Eom</div>
+    <div class="footer-copy">HAYAN — 2021</div>
+    <div class="footer-copy">All rights reserved</div>
+  </div>
 
-  </main>
-</div>
+</div><!-- end snap-container -->
 
 <script>
-const links = document.querySelectorAll('.sidebar a');
-const sections = document.querySelectorAll('section[id]');
+const container = document.getElementById('snapContainer');
+const panels = Array.from(document.querySelectorAll('.panel, .panel--footer'));
+const sidebarLinks = Array.from(document.querySelectorAll('.sidebar a'));
+const counter = document.getElementById('sectionCounter');
+const progressBar = document.getElementById('progressBar');
 
-const spy = new IntersectionObserver(entries => {
+const total = panels.length;
+
+// Sidebar link click → scroll to panel
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = link.dataset.target;
+    const panel = panels.find(p => p.dataset.section === target);
+    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Reveal map
+const revealMap = new Map();
+panels.forEach(panel => {
+  revealMap.set(panel, panel.querySelectorAll('.r'));
+});
+
+function activatePanel(index) {
+  const panel = panels[index];
+  const section = panel?.dataset?.section;
+
+  // Update sidebar
+  sidebarLinks.forEach(link => {
+    link.classList.toggle('active', link.dataset.target === section);
+  });
+
+  // Counter + progress
+  counter.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  const pct = total > 1 ? (index / (total - 1)) * 100 : 100;
+  progressBar.style.width = pct + '%';
+
+  // Reveal animations
+  const els = revealMap.get(panel);
+  if (els) {
+    els.forEach(el => { el.classList.remove('in'); void el.offsetWidth; });
+    requestAnimationFrame(() => els.forEach(el => el.classList.add('in')));
+  }
+}
+
+// Intersection observer
+const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      links.forEach(l => l.classList.remove('active'));
-      const active = document.querySelector('.sidebar a[href="#' + e.target.id + '"]');
-      if (active) active.classList.add('active');
+      const idx = panels.indexOf(e.target);
+      if (idx !== -1) activatePanel(idx);
     }
   });
-}, { rootMargin: '-48px 0px -60% 0px' });
+}, { root: container, threshold: 0.5 });
 
-sections.forEach(s => spy.observe(s));
+panels.forEach(p => obs.observe(p));
 
-const revObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('in');
-      revObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.08 });
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  const active = panels.findIndex(p => p.dataset.section === (document.querySelector('.sidebar a.active')?.dataset?.target));
+  if (e.key === 'ArrowDown' && active < total - 1) panels[active + 1].scrollIntoView({ behavior: 'smooth' });
+  else if (e.key === 'ArrowUp' && active > 0) panels[active - 1].scrollIntoView({ behavior: 'smooth' });
+});
 
-document.querySelectorAll('.r').forEach(el => revObs.observe(el));
+activatePanel(0);
 </script>
-
 </body>
 </html>
