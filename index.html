@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +34,6 @@ body {
   overflow: hidden;
 }
 
-/* Ensure fixed elements always paint on top */
 header, .sidebar, .progress-bar, .section-counter { isolation: isolate; }
 
 /* ── HEADER ── */
@@ -145,7 +143,6 @@ header {
   overflow: hidden;
 }
 
-/* Section label */
 .sec-label {
   font-size: 10px;
   font-family: var(--mono);
@@ -156,7 +153,6 @@ header {
   flex-shrink: 0;
 }
 
-/* Section heading */
 .sec-h2 {
   font-size: clamp(24px, 3vw, 42px);
   font-weight: 300;
@@ -167,7 +163,6 @@ header {
   flex-shrink: 0;
 }
 
-/* Body text */
 .sec-body {
   font-size: 15px;
   line-height: 1.75;
@@ -179,7 +174,6 @@ header {
 
 /* ── PANEL VARIANTS ── */
 
-/* Hero panel */
 .panel--hero { background: var(--bg); }
 .panel--hero .panel-inner { justify-content: flex-end; padding-bottom: 64px; }
 .hero-title {
@@ -216,17 +210,14 @@ header {
 }
 .scroll-hint::after { content: '↓'; font-size: 14px; }
 
-/* Dark panel */
 .panel--dark { background: var(--black); color: var(--bg); }
 .panel--dark .sec-label { color: var(--bg); }
 .panel--dark .sec-h2 { color: var(--bg); }
 .panel--dark .sec-body { color: var(--bg); }
 .panel--dark .border-line { border-color: rgba(255,255,255,0.1); }
 
-/* Mint panel */
 .panel--mint { background: var(--pistachio); }
 
-/* Split layout */
 .split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -255,10 +246,7 @@ header {
   display: block;
 }
 
-/* Full-bleed image panel */
-.panel--image {
-  position: relative;
-}
+.panel--image { position: relative; }
 .panel--image .img-ph,
 .panel--image img,
 .panel--image video {
@@ -282,13 +270,11 @@ header {
 }
 .panel--image.panel--dark .caption { color: var(--bg); }
 
-/* Text-dominant centered panel */
 .panel--centered .panel-inner {
   align-items: flex-start;
   justify-content: center;
 }
 
-/* Stats panel */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -317,7 +303,6 @@ header {
   opacity: 0.45;
 }
 
-/* Palette row */
 .palette-row {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -342,7 +327,6 @@ header {
 }
 .swatch.light-text .swatch-hex { color: rgba(255,255,255,0.5); }
 
-/* Logo display */
 .logo-display {
   font-size: clamp(56px, 10vw, 120px);
   font-weight: 300;
@@ -352,7 +336,6 @@ header {
   flex-shrink: 0;
 }
 
-/* Retail grid */
 .retail-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -372,7 +355,6 @@ header {
   text-align: center;
 }
 
-/* Quote cards */
 .quote-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -399,7 +381,6 @@ header {
   opacity: 0.45;
 }
 
-/* Summary table */
 .summary-table {
   width: 100%;
   border-collapse: collapse;
@@ -436,7 +417,6 @@ header {
   letter-spacing: 0.05em;
 }
 
-/* Image placeholder */
 .img-ph {
   background: #ddd;
   background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px);
@@ -462,7 +442,6 @@ header {
   color: rgba(0,0,0,0.35);
 }
 
-/* Scrolling image strip (horizontal) */
 .img-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -473,7 +452,6 @@ header {
 }
 .img-strip > * { height: 100%; }
 
-/* Grid 2 within a panel */
 .grid-2-fill {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -484,7 +462,6 @@ header {
 }
 .grid-2-fill > * { height: 100%; }
 
-/* Vertical stack for text + visual within centered panel */
 .text-then-visual {
   flex: 1;
   min-height: 0;
@@ -492,8 +469,112 @@ header {
   overflow: hidden;
 }
 
-/* Panel border bottom */
 .panel-border { border-bottom: 1px solid var(--border); }
+
+/* ── PACKAGING SLIDER ── */
+.panel--pkg-slider {
+  background: var(--black);
+  position: relative;
+  overflow: hidden;
+}
+
+.pkg-slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pkg-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pkg-slide img,
+.pkg-slide .img-ph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slide arrows */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.slider-arrow:hover {
+  border-color: rgba(255,255,255,0.7);
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+.slider-arrow--prev { left: 32px; }
+.slider-arrow--next { right: 32px; }
+
+/* Slide dots */
+.slider-dots {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.slider-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.slider-dot.active {
+  background: #fff;
+  transform: scale(1.3);
+}
+
+/* Slide counter top-right */
+.slider-counter {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  z-index: 10;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4);
+}
+
+/* Slide label bottom-left */
+.slider-label {
+  position: absolute;
+  bottom: 32px;
+  left: 48px;
+  z-index: 10;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
 
 /* ── REVEAL ANIMATIONS ── */
 .r {
@@ -539,6 +620,8 @@ header {
   .hero-title { font-size: clamp(72px, 18vw, 160px); }
   .img-strip { grid-template-columns: 1fr 1fr; }
   .panel--footer { padding: 0 28px; flex-direction: column; justify-content: center; gap: 12px; }
+  .slider-arrow--prev { left: 16px; }
+  .slider-arrow--next { right: 16px; }
 }
 </style>
 </head>
@@ -575,7 +658,7 @@ header {
 </nav>
 
 <!-- SECTION COUNTER -->
-<div class="section-counter" id="sectionCounter">01 / 15</div>
+<div class="section-counter" id="sectionCounter">01 / 16</div>
 
 <!-- SNAP CONTAINER -->
 <div class="snap-container" id="snapContainer">
@@ -593,7 +676,7 @@ header {
     </div>
   </div>
 
-  <!-- 02 THE BRIEF — split -->
+  <!-- 02 THE BRIEF -->
   <div class="panel" data-label="The brief" data-section="s-brief" style="flex-direction:row; overflow:hidden;">
     <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
       <div class="split-text">
@@ -609,22 +692,22 @@ header {
     </div>
   </div>
 
-  <!-- 03 PROBLEM — text above, video below -->
-<div class="panel" data-label="The problem" data-section="s-problem">
-  <div style="padding:52px 72px 32px; flex-shrink:0;">
-    <div class="sec-label r">The problem</div>
-    <h2 class="sec-h2 r" style="font-size:clamp(22px,3vw,38px); max-width:700px;">The category had a ceiling.</h2>
-    <p class="sec-body r d1" style="margin-top:16px; max-width:580px;">Bamboo handles, muted palettes, design that signaled virtue instead of desire. Eco-friendly toothbrushes never tried to appeal beyond the people who already cared.</p>
+  <!-- 03 PROBLEM -->
+  <div class="panel" data-label="The problem" data-section="s-problem">
+    <div style="padding:52px 72px 32px; flex-shrink:0;">
+      <div class="sec-label r">The problem</div>
+      <h2 class="sec-h2 r" style="font-size:clamp(22px,3vw,38px); max-width:700px;">The category had a ceiling.</h2>
+      <p class="sec-body r d1" style="margin-top:16px; max-width:580px;">Bamboo handles, muted palettes, design that signaled virtue instead of desire. Eco-friendly toothbrushes never tried to appeal beyond the people who already cared.</p>
+    </div>
+    <div style="flex:1; min-height:0; margin:0; overflow:hidden;">
+      <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
+        <source src="videos/problem-bamboo.mp4" type="video/mp4">
+        <div class="img-ph" style="height:100%;width:100%;">Video — bamboo product category</div>
+      </video>
+    </div>
   </div>
-  <div style="flex:1; min-height:0; margin:0; overflow:hidden;">
-    <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
-      <source src="videos/problem-bamboo.mp4" type="video/mp4">
-      <div class="img-ph" style="height:100%;width:100%;">Video — bamboo product category</div>
-    </video>
-  </div>
-</div>
-  
-  <!-- 04 MATERIAL — split -->
+
+  <!-- 04 MATERIAL -->
   <div class="panel" data-label="Material" data-section="s-material" style="flex-direction:row; overflow:hidden;">
     <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
       <div class="split-visual" style="border-right:1px solid var(--border);">
@@ -639,7 +722,7 @@ header {
     </div>
   </div>
 
-  <!-- 05 PRODUCT DESIGN — centered with full visual -->
+  <!-- 05 PRODUCT DESIGN -->
   <div class="panel panel--dark" data-label="Product" data-section="s-product">
     <div class="panel-inner" style="padding-bottom:0; padding-right:0; overflow:hidden; flex:1;">
       <div class="sec-label r">Product design</div>
@@ -654,7 +737,7 @@ header {
     </div>
   </div>
 
-  <!-- 06 CMF — split with palette -->
+  <!-- 06 CMF -->
   <div class="panel panel--mint" data-label="CMF" data-section="s-cmf" style="flex-direction:row; overflow:hidden;">
     <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
       <div class="split-text">
@@ -687,13 +770,13 @@ header {
     </div>
   </div>
 
-  <!-- 08 IDENTITY — full panel image + caption -->
+  <!-- 08 IDENTITY -->
   <div class="panel panel--image" data-label="Identity" data-section="s-identity">
     <div class="img-ph" style="background:#e8e8e4;">Brand specimen — type, color, applications</div>
     <div class="caption">Brand identity — typography, color system, voice</div>
   </div>
 
-  <!-- 09 PHOTOGRAPHY — grid fill -->
+  <!-- 09 PHOTOGRAPHY -->
   <div class="panel" data-label="Photography" data-section="s-photography" style="overflow:hidden;">
     <div class="panel-inner" style="padding-bottom:16px; flex-shrink:0;">
       <div class="sec-label r">Photography direction</div>
@@ -708,7 +791,7 @@ header {
     </div>
   </div>
 
-  <!-- 10 PACKAGING — split -->
+  <!-- 10 PACKAGING — split (original, unchanged) -->
   <div class="panel" data-label="Packaging" data-section="s-packaging" style="flex-direction:row; overflow:hidden;">
     <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
       <div class="split-visual" style="border-right:1px solid var(--border);">
@@ -721,6 +804,48 @@ header {
         <p class="sec-body r d2" style="margin-top:14px;">The packaging was a brand statement before the product was ever touched. Shelf presence in a category that had none.</p>
       </div>
     </div>
+  </div>
+
+  <!-- 10b PACKAGING GALLERY — full-bleed slider -->
+  <div class="panel panel--pkg-slider" data-label="Packaging" data-section="s-packaging-gallery">
+
+    <!-- Slider track -->
+    <div class="pkg-slider-track" id="pkgSliderTrack">
+
+      <!-- Slide 1 -->
+      <div class="pkg-slide">
+        <div class="img-ph dark">Packaging image 01</div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="pkg-slide">
+        <div class="img-ph dark">Packaging image 02</div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="pkg-slide">
+        <div class="img-ph dark">Packaging image 03</div>
+      </div>
+
+    </div>
+
+    <!-- Arrows -->
+    <button class="slider-arrow slider-arrow--prev" id="pkgPrev" aria-label="Previous">←</button>
+    <button class="slider-arrow slider-arrow--next" id="pkgNext" aria-label="Next">→</button>
+
+    <!-- Slide counter -->
+    <div class="slider-counter" id="pkgCounter">1 / 3</div>
+
+    <!-- Dots -->
+    <div class="slider-dots" id="pkgDots">
+      <div class="slider-dot active" data-index="0"></div>
+      <div class="slider-dot" data-index="1"></div>
+      <div class="slider-dot" data-index="2"></div>
+    </div>
+
+    <!-- Label -->
+    <div class="slider-label">Packaging details</div>
+
   </div>
 
   <!-- 11 SYSTEM -->
@@ -741,7 +866,7 @@ header {
     </div>
   </div>
 
-  <!-- 12 OUTCOME — stats -->
+  <!-- 12 OUTCOME -->
   <div class="panel" data-label="Outcome" data-section="s-outcome">
     <div class="panel-inner">
       <div class="sec-label r">Outcome</div>
@@ -851,15 +976,14 @@ header {
 </div><!-- end snap-container -->
 
 <script>
+// ── MAIN NAV + SCROLL LOGIC ──
 const container = document.getElementById('snapContainer');
 const panels = Array.from(document.querySelectorAll('.panel, .panel--footer'));
 const sidebarLinks = Array.from(document.querySelectorAll('.sidebar a'));
 const counter = document.getElementById('sectionCounter');
 const progressBar = document.getElementById('progressBar');
-
 const total = panels.length;
 
-// Sidebar link click → scroll to panel
 sidebarLinks.forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -869,7 +993,6 @@ sidebarLinks.forEach(link => {
   });
 });
 
-// Reveal map
 const revealMap = new Map();
 panels.forEach(panel => {
   revealMap.set(panel, panel.querySelectorAll('.r'));
@@ -879,17 +1002,17 @@ function activatePanel(index) {
   const panel = panels[index];
   const section = panel?.dataset?.section;
 
-  // Update sidebar
+  // Map packaging gallery to packaging sidebar link
+  const sidebarTarget = section === 's-packaging-gallery' ? 's-packaging' : section;
+
   sidebarLinks.forEach(link => {
-    link.classList.toggle('active', link.dataset.target === section);
+    link.classList.toggle('active', link.dataset.target === sidebarTarget);
   });
 
-  // Counter + progress
   counter.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
   const pct = total > 1 ? (index / (total - 1)) * 100 : 100;
   progressBar.style.width = pct + '%';
 
-  // Reveal animations
   const els = revealMap.get(panel);
   if (els) {
     els.forEach(el => { el.classList.remove('in'); void el.offsetWidth; });
@@ -897,7 +1020,6 @@ function activatePanel(index) {
   }
 }
 
-// Intersection observer
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -909,14 +1031,44 @@ const obs = new IntersectionObserver(entries => {
 
 panels.forEach(p => obs.observe(p));
 
-// Keyboard nav
 document.addEventListener('keydown', e => {
-  const active = panels.findIndex(p => p.dataset.section === (document.querySelector('.sidebar a.active')?.dataset?.target));
+  const active = panels.findIndex(p => {
+    const activeLink = document.querySelector('.sidebar a.active');
+    return p.dataset.section === activeLink?.dataset?.target;
+  });
   if (e.key === 'ArrowDown' && active < total - 1) panels[active + 1].scrollIntoView({ behavior: 'smooth' });
   else if (e.key === 'ArrowUp' && active > 0) panels[active - 1].scrollIntoView({ behavior: 'smooth' });
 });
 
 activatePanel(0);
+
+// ── PACKAGING SLIDER ──
+const track = document.getElementById('pkgSliderTrack');
+const dots = Array.from(document.querySelectorAll('#pkgDots .slider-dot'));
+const pkgCounter = document.getElementById('pkgCounter');
+const prevBtn = document.getElementById('pkgPrev');
+const nextBtn = document.getElementById('pkgNext');
+const slideCount = 3;
+let currentSlide = 0;
+
+function goToSlide(n) {
+  currentSlide = (n + slideCount) % slideCount;
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+  pkgCounter.textContent = `${currentSlide + 1} / ${slideCount}`;
+}
+
+prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+dots.forEach(dot => dot.addEventListener('click', () => goToSlide(+dot.dataset.index)));
+
+// Swipe support
+let touchStartX = 0;
+track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+track.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 40) goToSlide(dx < 0 ? currentSlide + 1 : currentSlide - 1);
+});
 </script>
 </body>
 </html>
