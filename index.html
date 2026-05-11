@@ -375,39 +375,139 @@ header {
   color: rgba(255,255,255,0.45);
 }
 
-/* ── PRESS ROW ── */
-.press-row {
+/* ── OUTCOME CONSOLIDATED ── */
+.outcome-left {
+  width: 42%;
+  flex-shrink: 0;
+  padding: 48px 48px 48px 72px;
   display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-top: 24px;
-  margin-bottom: 4px;
-  padding: 18px 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+.outcome-stats {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+}
+.outcome-stat {
+  flex: 1;
+  padding: 20px 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-.press-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.38;
-  flex-shrink: 0;
+.outcome-stat + .outcome-stat {
+  padding-left: 28px;
+  border-left: 1px solid var(--border);
 }
-.press-links {
+.outcome-press {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin-bottom: 20px;
+}
+.outcome-press-item {
+  background: var(--bg);
+  padding: 16px 18px;
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 4px;
 }
-.press-link {
-  font-family: var(--mono);
+.outcome-press-name {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.outcome-press-desc {
   font-size: 11px;
-  letter-spacing: 0.06em;
+  font-family: var(--mono);
+  opacity: 0.45;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+}
+.outcome-press-link {
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
   color: var(--black);
   text-decoration: none;
-  opacity: 0.7;
+  opacity: 0.55;
+  margin-top: 6px;
   transition: opacity 0.15s;
 }
-.press-link:hover { opacity: 1; }
+.outcome-press-link:hover { opacity: 1; }
+.outcome-quotes {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+}
+.outcome-quote {
+  background: var(--bg);
+  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.oq-kr {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--black);
+  line-height: 1.4;
+}
+.oq-en {
+  font-size: 11px;
+  font-family: var(--mono);
+  opacity: 0.42;
+  letter-spacing: 0.03em;
+}
+.outcome-right {
+  flex: 1;
+  display: grid;
+  overflow: hidden;
+}
+.outcome-insta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+}
+.outcome-insta-cell {
+  overflow: hidden;
+  position: relative;
+}
+.outcome-insta-cell .img-ph {
+  width: 100%;
+  height: 100%;
+  min-height: 80px;
+}
+
+/* ── PRESS BLOCK (legacy, kept for safety) ── */
+.press-block { margin-top: 24px; flex-shrink: 0; }
+.press-block-inner { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); }
+.press-outlet { padding: 20px 24px; display: flex; flex-direction: column; gap: 6px; }
+.press-outlet + .press-outlet { border-left: 1px solid var(--border); }
+.press-outlet-name { font-size: 13px; font-weight: 500; }
+.press-outlet-desc { font-size: 12px; font-family: var(--mono); opacity: 0.5; letter-spacing: 0.04em; line-height: 1.5; }
+.press-outlet-link { font-size: 11px; font-family: var(--mono); letter-spacing: 0.07em; color: var(--black); text-decoration: none; opacity: 0.55; margin-top: 4px; transition: opacity 0.15s; }
+.press-outlet-link:hover { opacity: 1; }
+
+/* ── INSTAGRAM GRID (legacy) ── */
+.insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 3px; flex: 1; min-height: 0; margin-top: 20px; }
+.insta-cell { overflow: hidden; position: relative; }
+.insta-cell .img-ph { height: 100%; min-height: 120px; }
+
+/* ── QUOTE CARDS (legacy) ── */
+.quotes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); margin-top: 28px; flex: 1; min-height: 0; }
+.quote-card { background: var(--black); padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.quote-kr { font-size: clamp(16px, 1.8vw, 22px); font-weight: 300; color: rgba(255,255,255,0.9); letter-spacing: -0.01em; line-height: 1.4; }
+.quote-en { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.45); font-style: italic; line-height: 1.5; }
+.quote-source { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-top: 6px; }
 
 /* ── STATS / OUTCOME ── */
 .stats-row {
@@ -737,42 +837,76 @@ header {
   </div>
 
   <!-- ══════════════════════════════════════
-       07 · OUTCOME
+       07 · OUTCOME — stats + press
   ══════════════════════════════════════ -->
-  <div class="panel" data-label="Outcome" data-section="s-outcome">
-    <div class="panel-inner">
+  <div class="panel" data-label="Outcome" data-section="s-outcome" style="flex-direction:row; overflow:hidden;">
+    <!-- LEFT: label + big stats -->
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:52px 64px; border-right:1px solid var(--border);">
       <div class="sec-label r">Outcome</div>
-      <h2 class="sec-h2 r">The brand earned its sales without buying them.</h2>
-      <div class="stats-row r d1" style="grid-template-columns: 1fr 1fr;">
-        <div class="stat-block">
+      <div class="r d1" style="display:flex; flex-direction:column; gap:0; margin-top:8px;">
+        <div style="padding:40px 0; border-top:1px solid var(--border);">
           <div class="stat-num">1,495%</div>
-          <div class="stat-label">of crowdfunding goal</div>
+          <div class="stat-label" style="margin-top:10px;">of crowdfunding goal — Wadiz</div>
         </div>
-        <div class="stat-block">
+        <div style="padding:40px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
           <div class="stat-num">15+</div>
-          <div class="stat-label">retail partners</div>
+          <div class="stat-label" style="margin-top:10px;">retail partners across Korea</div>
         </div>
       </div>
-      <div class="press-row r d2">
-        <div class="press-label">As seen in</div>
-        <div class="press-links">
-          <a href="https://hypebae.com" target="_blank" rel="noopener" class="press-link">Hypebae ↗</a>
-          <a href="https://ddp.or.kr" target="_blank" rel="noopener" class="press-link">DDP Seoul ↗</a>
+    </div>
+    <!-- RIGHT: press -->
+    <div style="width:38%; display:flex; flex-direction:column; justify-content:center; padding:52px 56px;">
+      <div class="sec-label r">Press</div>
+      <div class="r d1" style="display:flex; flex-direction:column; gap:1px; background:var(--border); margin-top:16px;">
+        <div style="background:var(--bg); padding:28px 28px 24px;">
+          <div style="font-size:18px; font-weight:400; letter-spacing:-0.01em; margin-bottom:10px;">Hypebae</div>
+          <div style="font-size:12px; font-family:var(--mono); opacity:0.45; letter-spacing:0.03em; line-height:1.6; margin-bottom:14px;">Featured as a standout in Korean sustainable design</div>
+          <a href="https://hypebae.com" target="_blank" rel="noopener" style="font-size:10px; font-family:var(--mono); letter-spacing:0.1em; color:var(--black); text-decoration:none; opacity:0.55; transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.55">Read article ↗</a>
+        </div>
+        <div style="background:var(--bg); padding:28px 28px 24px;">
+          <div style="font-size:18px; font-weight:400; letter-spacing:-0.01em; margin-bottom:10px;">DDP D-magazine</div>
+          <div style="font-size:12px; font-family:var(--mono); opacity:0.45; letter-spacing:0.03em; line-height:1.6; margin-bottom:14px;">Interview feature in Dongdaemun Design Plaza's official magazine</div>
+          <a href="https://ddp.or.kr" target="_blank" rel="noopener" style="font-size:10px; font-family:var(--mono); letter-spacing:0.1em; color:var(--black); text-decoration:none; opacity:0.55; transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.55">Read interview ↗</a>
         </div>
       </div>
-      <div class="retail-grid r d3">
-        <div class="retail-cell">DDP Design Store</div>
-        <div class="retail-cell">MTL</div>
-        <div class="retail-cell">OBSCURA</div>
-        <div class="retail-cell">PARSNIPS</div>
-        <div class="retail-cell">MUSINSA</div>
-        <div class="retail-cell">29CM</div>
-        <div class="retail-cell">KAKAO Gift</div>
-        <div class="retail-cell">Shinsegae DF</div>
-        <div class="retail-cell">Ananti</div>
-        <div class="retail-cell">Hotel POCO</div>
-        <div class="retail-cell">Hyundai M Mall</div>
-        <div class="retail-cell">Breeze Archive</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       07b · CUSTOMER — quotes + instagram
+  ══════════════════════════════════════ -->
+  <div class="panel" data-label="Outcome" data-section="s-outcome-voice" style="flex-direction:row; overflow:hidden;">
+    <!-- LEFT: quotes -->
+    <div class="outcome-left r">
+      <div class="sec-label">Customer Voice</div>
+      <div class="outcome-quotes">
+        <div class="outcome-quote">
+          <div class="oq-kr">인생칫솔이에요.</div>
+          <div class="oq-en">"The toothbrush of my life."</div>
+        </div>
+        <div class="outcome-quote">
+          <div class="oq-kr">선물로 사고 싶은 제품.</div>
+          <div class="oq-en">"A product I want to buy as a gift."</div>
+        </div>
+        <div class="outcome-quote">
+          <div class="oq-kr">HAY나 Vitra 같은 느낌이에요.</div>
+          <div class="oq-en">"It feels like HAY or Vitra."</div>
+        </div>
+        <div class="outcome-quote">
+          <div class="oq-kr">집에 있는 다른 물건들도 다시 보게 됐어요.</div>
+          <div class="oq-en">"It made me reconsider every other object in my home."</div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT: instagram grid -->
+    <div class="outcome-right">
+      <div class="outcome-insta-grid">
+        <div class="outcome-insta-cell"><div class="img-ph">Instagram 1</div></div>
+        <div class="outcome-insta-cell"><div class="img-ph">Instagram 2</div></div>
+        <div class="outcome-insta-cell"><div class="img-ph">Instagram 3</div></div>
+        <div class="outcome-insta-cell"><div class="img-ph">Instagram 4</div></div>
+        <div class="outcome-insta-cell"><div class="img-ph">Instagram 5</div></div>
+        <div class="outcome-insta-cell"><div class="img-ph">Instagram 6</div></div>
       </div>
     </div>
   </div>
@@ -856,6 +990,7 @@ const sectionParentMap = {
   's-product-img2': 's-product',
   's-product-img3': 's-product',
   's-product-vid2': 's-product',
+  's-outcome-voice': 's-outcome',
 };
 
 sidebarLinks.forEach(link => {
