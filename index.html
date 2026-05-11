@@ -674,7 +674,7 @@ header {
 <header>
   <div class="hdr-left">
     <div class="hdr-brand">HAYAN</div>
-    <div class="hdr-collab">Design Director</div>
+    <div class="hdr-collab">Co-founder · Design Director</div>
   </div>
   <div class="hdr-right">2021</div>
 </header>
@@ -713,7 +713,7 @@ header {
   ══════════════════════════════════════ -->
   <div class="panel panel--fullbleed" data-label="Intro" data-section="s-intro-vid">
     <video autoplay loop muted playsinline>
-      <source src="videos/Product_v2.mp4" type="video/mp4">
+      <source src="videos/product2.mp4" type="video/mp4">
       <div class="img-ph dark">Video — material &amp; CMF</div>
     </video>
     <div class="caption">CMF — material story</div>
@@ -808,24 +808,16 @@ header {
     </div>
   </div>
 
-  <!-- 05b · PACKAGING GALLERY — full-bleed slider -->
-  <div class="panel panel--pkg-slider" data-label="Packaging" data-section="s-packaging-gallery">
-    <div class="pkg-slider-track" id="pkgSliderTrack">
-      <div class="pkg-slide">
-        <img src="images/package4.jpg" alt="Packaging" />
-      </div>
-      <div class="pkg-slide">
-        <img src="images/package3.jpg" alt="Packaging" />
-      </div>
-    </div>
-    <button class="slider-arrow slider-arrow--prev" id="pkgPrev" aria-label="Previous">←</button>
-    <button class="slider-arrow slider-arrow--next" id="pkgNext" aria-label="Next">→</button>
-    <div class="slider-counter" id="pkgCounter">1 / 2</div>
-    <div class="slider-dots" id="pkgDots">
-      <div class="slider-dot active" data-index="0"></div>
-      <div class="slider-dot" data-index="1"></div>
-    </div>
-    <div class="slider-label">Packaging details</div>
+  <!-- 05b · PACKAGING — full image -->
+  <div class="panel panel--fullbleed" data-label="Packaging" data-section="s-packaging-img1">
+    <img src="images/package4.jpg" alt="Packaging" />
+    <div class="caption">Packaging details</div>
+  </div>
+
+  <!-- 05c · PACKAGING — full image -->
+  <div class="panel panel--fullbleed" data-label="Packaging" data-section="s-packaging-img2">
+    <img src="images/package3.jpg" alt="Packaging" />
+    <div class="caption">Packaging details</div>
   </div>
 
   <!-- ══════════════════════════════════════
@@ -928,7 +920,7 @@ header {
         <tbody>
           <tr>
             <td style="font-family:var(--mono);font-size:11px;opacity:0.45;width:140px;">Role</td>
-            <td>Design Director</td>
+            <td>Co-founder · Design Director</td>
           </tr>
           <tr>
             <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Year</td>
@@ -988,7 +980,8 @@ const total = panels.length;
 // Sidebar section grouping map (sub-panels → parent nav item)
 const sectionParentMap = {
   's-intro-vid': 's-intro',
-  's-packaging-gallery': 's-packaging',
+  's-packaging-img1': 's-packaging',
+  's-packaging-img2': 's-packaging',
   's-product-img1': 's-product',
   's-product-vid1': 's-product',
   's-product-img2': 's-product',
