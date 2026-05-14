@@ -3,1348 +3,566 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HAYAN — A sustainable lifestyle brand</title>
+<title>Hye Min Eom — Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,200;1,9..40,300;1,9..40,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #f3f3f3;
-  --black: #1a1a1a;
-  --mid: #888;
-  --border: rgba(0,0,0,0.1);
-  --pistachio: #b4dcc8;
-  --font: 'DM Sans', sans-serif;
-  --mono: 'DM Mono', monospace;
-  --hdr: 48px;
-  --sidebar-w: 180px;
+  --bg:     #f2f2f0;
+  --black:  #1a1a1a;
+  --mid:    #888;
+  --border: rgba(0,0,0,0.09);
+  --font:   'DM Sans', sans-serif;
+  --mono:   'DM Mono', monospace;
 }
 
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--black);
+html, body {
+  height: 100%;
+  overflow: auto;
   font-family: var(--font);
   font-size: 15px;
-  line-height: 1.6;
-  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  color: var(--black);
 }
 
-header, .sidebar, .progress-bar, .section-counter { isolation: isolate; }
-
-/* ── HEADER ── */
+/* ── FIXED HEADER ── */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 300;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  z-index: 200;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
-  height: var(--hdr);
+  padding: 0 40px;
+  transition: background 0.5s ease, border-color 0.5s ease;
 }
-.hdr-left { display: flex; align-items: center; gap: 20px; }
-.hdr-brand { font-size: 13px; font-weight: 500; letter-spacing: 0.03em; }
-.hdr-collab { font-size: 11px; font-family: var(--mono); opacity: 0.4; letter-spacing: 0.08em; }
-.hdr-right { font-size: 11px; font-family: var(--mono); opacity: 0.4; letter-spacing: 0.08em; }
-
-/* ── PROGRESS ── */
-.progress-bar {
-  position: fixed;
-  top: var(--hdr);
-  left: 0;
-  height: 2px;
-  background: var(--black);
-  width: 0%;
-  z-index: 300;
-  transition: width 0.3s ease;
+header.on-dark {
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-
-/* ── SECTION COUNTER ── */
-.section-counter {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 300;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  opacity: 0.4;
-}
-
-/* ── MOBILE NAV TOGGLE ── */
-.mobile-nav-btn {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  margin: -8px;
-  flex-direction: column;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-}
-.mobile-nav-btn span {
-  display: block;
-  width: 18px;
-  height: 1px;
-  background: var(--black);
-  transition: transform 0.25s, opacity 0.25s;
-}
-.mobile-nav-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-.mobile-nav-btn.open span:nth-child(2) { opacity: 0; }
-.mobile-nav-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-/* ── MOBILE DRAWER ── */
-.mobile-drawer {
-  display: none;
-  position: fixed;
-  top: var(--hdr);
-  left: 0;
-  right: 0;
-  z-index: 280;
+header.on-light {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
-  padding: 16px 24px 20px;
-  transform: translateY(-110%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
 }
-.mobile-drawer.open { transform: translateY(0); }
-.mobile-drawer a {
-  display: block;
-  font-size: 12px;
-  font-family: var(--mono);
-  letter-spacing: 0.07em;
-  color: var(--black);
-  text-decoration: none;
-  opacity: 0.35;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--border);
-  text-transform: uppercase;
-  transition: opacity 0.15s;
+.hdr-name {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.5s ease;
 }
-.mobile-drawer a:last-child { border-bottom: none; }
-.mobile-drawer a.active { opacity: 1; font-weight: 500; }
-
-/* ── SIDEBAR NAV ── */
-.sidebar {
-  position: fixed;
-  top: var(--hdr);
-  left: 0;
-  width: var(--sidebar-w);
-  height: calc(100vh - var(--hdr));
-  z-index: 250;
-  border-right: 1px solid var(--border);
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  padding: 28px 20px;
-  gap: 0;
-  overflow-y: auto;
-}
-.sidebar a {
-  display: block;
+header.on-dark .hdr-name  { color: rgba(242,242,240,0.82); }
+header.on-light .hdr-name { color: var(--black); }
+.hdr-right { display: flex; align-items: center; gap: 28px; }
+.hdr-right a {
   font-size: 11px;
   font-family: var(--mono);
-  letter-spacing: 0.07em;
-  color: var(--black);
   text-decoration: none;
-  opacity: 0.28;
-  padding: 6px 0;
-  transition: opacity 0.15s;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  cursor: pointer;
+  transition: color 0.2s;
 }
-.sidebar a:hover { opacity: 0.6; }
-.sidebar a.active { opacity: 1; font-weight: 500; }
+header.on-dark  .hdr-right a       { color: rgba(242,242,240,0.38); }
+header.on-dark  .hdr-right a:hover { color: rgba(242,242,240,0.88); }
+header.on-light .hdr-right a       { color: var(--mid); }
+header.on-light .hdr-right a:hover { color: var(--black); }
 
-/* ── SNAP CONTAINER ── */
-.snap-container {
-  position: fixed;
-  top: var(--hdr);
-  left: var(--sidebar-w);
-  right: 0;
-  bottom: 0;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* ── PANELS ── */
-.panel {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  height: calc(100vh - var(--hdr));
+/* ── S1: video hero ── */
+.snap-full {
+  height: 100vh;
   width: 100%;
   position: relative;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
 }
 
-/* ── PANEL INNER ── */
-.panel-inner {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 52px 72px 48px;
-  overflow: hidden;
-}
-
-.sec-label {
-  font-size: 10px;
-  font-family: var(--mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.38;
-  margin-bottom: 28px;
-  flex-shrink: 0;
-}
-
-.sec-h2 {
-  font-size: clamp(24px, 3vw, 42px);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 1.18;
-  margin-bottom: 24px;
-  max-width: 700px;
-  flex-shrink: 0;
-}
-
-.sec-body {
-  font-size: 15px;
-  line-height: 1.75;
-  font-weight: 300;
-  max-width: 600px;
-  opacity: 0.72;
-}
-.sec-body + .sec-body { margin-top: 14px; }
-
-/* ── FULL-BLEED VIDEO / IMAGE PANELS ── */
-.panel--fullbleed {
+/* ── S2: content ── */
+.snap-free {
+  width: 100%;
   position: relative;
-  background: var(--black);
 }
-.panel--fullbleed video,
-.panel--fullbleed img {
+
+/* ────────────────────────────────────
+   S1 — VIDEO HERO
+──────────────────────────────────── */
+.s-hero { background: #111; }
+
+.hero-video {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.panel--fullbleed .caption {
-  position: absolute;
-  bottom: 32px;
-  left: 48px;
-  right: 48px;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-  z-index: 2;
-}
-.panel--fullbleed .overlay-text {
-  position: absolute;
-  bottom: 32px;
-  left: 48px;
-  right: 48px;
-  z-index: 2;
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.6;
-  color: rgba(255,255,255,0.65);
-  max-width: 520px;
-}
-
-/* ── PANEL VARIANTS ── */
-.panel--dark { background: var(--black); color: var(--bg); }
-.panel--dark .sec-label { color: var(--bg); }
-.panel--dark .sec-h2 { color: var(--bg); }
-.panel--dark .sec-body { color: var(--bg); }
-
-.panel--mint { background: var(--pistachio); }
-
-/* ── CHALLENGE / SOLUTION SPLIT ── */
-.challenge-solution {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-.cs-block {
-  padding: 52px 56px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-}
-.cs-block + .cs-block {
-  border-left: 1px solid rgba(255,255,255,0.08);
-}
-.cs-tag {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.38;
-  margin-bottom: 24px;
-  flex-shrink: 0;
-}
-.cs-body {
-  font-size: clamp(15px, 1.6vw, 22px);
-  font-weight: 300;
-  line-height: 1.65;
-  letter-spacing: -0.01em;
-  color: rgba(255,255,255,0.88);
-  max-width: 520px;
-}
-
-/* ── SPLIT (image + text) ── */
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  flex: 1;
-  gap: 0;
-  overflow: hidden;
-  min-height: 0;
-}
-.split-text {
-  padding: 52px 56px 48px 72px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-}
-.split-visual {
-  overflow: hidden;
-  position: relative;
-}
-.split-visual .img-ph,
-.split-visual img,
-.split-visual video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ── PACKAGING SLIDER ── */
-.panel--pkg-slider {
-  background: var(--black);
-  position: relative;
-  overflow: hidden;
-}
-.pkg-slider-track {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.pkg-slide {
-  min-width: 100%;
-  height: 100%;
-  position: relative;
-  flex-shrink: 0;
-}
-.pkg-slide img,
-.pkg-slide .img-ph {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
 }
-.slider-arrow {
+.hero-fade {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  background: none;
-  border: 1px solid rgba(255,255,255,0.25);
-  color: rgba(255,255,255,0.7);
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  bottom: 0; left: 0; right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.35));
+  pointer-events: none;
+  z-index: 1;
 }
-.slider-arrow:hover {
-  border-color: rgba(255,255,255,0.7);
-  color: #fff;
-  background: rgba(255,255,255,0.08);
-}
-.slider-arrow--prev { left: 32px; }
-.slider-arrow--next { right: 32px; }
-.slider-dots {
+.scroll-cue {
   position: absolute;
-  bottom: 32px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10;
+  z-index: 2;
   display: flex;
-  gap: 8px;
+  flex-direction: column;
   align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
 }
-.slider-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-.slider-dot.active { background: #fff; transform: scale(1.3); }
-.slider-counter {
-  position: absolute;
-  top: 32px;
-  right: 48px;
-  z-index: 10;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.4);
-}
-.slider-label {
-  position: absolute;
-  bottom: 32px;
-  left: 48px;
-  z-index: 10;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-}
-
-/* ── OUTCOME ── */
-.outcome-left {
-  width: 42%;
-  flex-shrink: 0;
-  padding: 48px 48px 48px 72px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0;
-  border-right: 1px solid var(--border);
-  overflow: hidden;
-}
-.outcome-quotes {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--border);
-}
-.outcome-quote {
-  background: var(--bg);
-  padding: 12px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.oq-kr {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--black);
-  line-height: 1.4;
-}
-.oq-en {
-  font-size: 11px;
-  font-family: var(--mono);
-  opacity: 0.42;
-  letter-spacing: 0.03em;
-}
-.outcome-right {
-  flex: 1;
-  display: grid;
-  overflow: hidden;
-}
-.outcome-insta-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 3px;
-  width: 100%;
-  height: 100%;
-}
-.outcome-insta-cell {
+.scroll-cue-line {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.15);
   overflow: hidden;
   position: relative;
 }
-.outcome-insta-cell img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.scroll-cue-line::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.7);
+  animation: lineDown 1.8s ease-in-out 1.7s infinite;
+}
+.scroll-cue-label {
+  font-size: 9px;
+  font-family: var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
 }
 
-/* ── STATS ── */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  margin-top: 32px;
-  flex-shrink: 0;
+/* ────────────────────────────────────
+   S2 — CONTENT (intro + grid)
+──────────────────────────────────── */
+.s-content {
+  background: var(--bg);
+  padding-top: 52px; /* clears fixed header */
 }
-.stat-block {
-  padding: 32px 32px 32px 0;
-  border-right: 1px solid var(--border);
+
+.s-intro {
+  padding: 80px 40px 72px;
 }
-.stat-block:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
-.stat-block:first-child { padding-left: 0; }
-.stat-num {
-  font-size: clamp(40px, 5.5vw, 72px);
-  font-weight: 300;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.stat-label {
-  font-family: var(--mono);
+.intro-eyebrow {
   font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 24px;
+}
+.intro-headline {
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 200;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  max-width: 860px;
+  margin-bottom: 48px;
+}
+.intro-headline em { font-style: italic; font-weight: 200; }
+.intro-sub {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+.intro-bio {
+  font-size: 14px;
+  line-height: 1.78;
+  color: #555;
+  max-width: 400px;
+}
+.intro-meta { display: flex; flex-direction: column; gap: 10px; padding-top: 2px; }
+.intro-meta-row { display: flex; align-items: baseline; gap: 16px; }
+.intro-meta-key {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--mid);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.45;
-}
-.retail-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1px;
-  background: var(--border);
-  margin-top: 28px;
+  width: 70px;
   flex-shrink: 0;
 }
-.retail-cell {
-  background: var(--bg);
-  padding: 14px 10px;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  opacity: 0.55;
-  text-align: center;
+.intro-meta-val { font-size: 13px; color: var(--black); }
+
+
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 40px;
 }
 
-/* ── SUMMARY TABLE ── */
-.summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  margin-top: 28px;
+/* ────────────────────────────────────
+   WORK GRID
+──────────────────────────────────── */
+
+.work-header {
+  padding: 40px 40px 20px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
 }
-.summary-table th {
-  text-align: left;
-  font-family: var(--mono);
+.work-label {
   font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.35;
-  border-bottom: 1px solid var(--border);
-  padding: 8px 16px;
-  font-weight: 400;
-}
-.summary-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-  font-size: 13px;
-  line-height: 1.5;
-}
-.summary-table tr:last-child td { border-bottom: none; }
-.tag-row { display: flex; flex-wrap: wrap; gap: 5px; }
-.tag {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--border);
-  padding: 4px 10px;
-  font-size: 11px;
   font-family: var(--mono);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.work-count {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--mid);
+  letter-spacing: 0.08em;
 }
 
-/* ── IMAGE PLACEHOLDER ── */
-.img-ph {
-  background: #ddd;
-  background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px);
+.grid {
+  padding: 0 40px 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+/* ── CARDS ── */
+.card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.card:nth-child(1) { background: #1e1e1e; }
+.card:nth-child(2) { background: #e8e3dc; }
+.card:nth-child(3) { background: #d4dde8; }
+.card:nth-child(4) { background: #e8e0d4; }
+.card:nth-child(5) { background: #1c2020; }
+.card:nth-child(6) { background: #dde8dc; }
+
+.card-img-ph {
+  width: 100%;
+  aspect-ratio: 3/2;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 10px;
   font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(0,0,0,0.3);
+  color: rgba(255,255,255,0.15);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.card-img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.img-ph.dark {
-  background: #2a2a2a;
-  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255,0.04), rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px);
-  color: rgba(255,255,255,0.25);
-}
+.card:nth-child(2) .card-img-ph,
+.card:nth-child(3) .card-img-ph,
+.card:nth-child(4) .card-img-ph,
+.card:nth-child(6) .card-img-ph { color: rgba(0,0,0,0.13); }
 
-/* ── REVEAL ANIMATIONS ── */
-.r {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.r.in { opacity: 1; transform: none; }
-.r.d1 { transition-delay: 0.08s; }
-.r.d2 { transition-delay: 0.16s; }
-.r.d3 { transition-delay: 0.24s; }
-.r.d4 { transition-delay: 0.32s; }
+.card:hover .card-img,
+.card:hover .card-img-ph { transform: scale(1.04); }
 
-/* ── FOOTER PANEL ── */
-.panel--footer {
-  height: calc(100vh - var(--hdr));
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+.card-body {
+  padding: 16px 20px 20px;
+  border-top: 1px solid rgba(0,0,0,0.07);
+}
+.card:nth-child(1) .card-body,
+.card:nth-child(5) .card-body { border-top-color: rgba(255,255,255,0.07); }
+
+.card-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 72px;
-  border-top: 1px solid var(--border);
+  margin-bottom: 6px;
 }
-.footer-copy {
+.card-tags { display: flex; gap: 7px; }
+.card-tag {
+  font-size: 9px;
   font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.card:nth-child(1) .card-tag,
+.card:nth-child(5) .card-tag { color: rgba(255,255,255,0.25); }
+.card-year {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--mid);
+}
+.card:nth-child(1) .card-year,
+.card:nth-child(5) .card-year { color: rgba(255,255,255,0.25); }
+
+.card-title {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.card:nth-child(1) .card-title,
+.card:nth-child(5) .card-title { color: rgba(255,255,255,0.88); }
+
+.card-desc {
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 1.5;
+}
+.card:nth-child(1) .card-desc,
+.card:nth-child(5) .card-desc { color: rgba(255,255,255,0.26); }
+
+.award-pip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.pip-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #e8312a;
+  flex-shrink: 0;
+}
+.pip-text {
+  font-size: 9px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.card:nth-child(1) .pip-text { color: rgba(255,255,255,0.3); }
+
+.card-arrow {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.22s, transform 0.22s;
+  z-index: 2;
+}
+.card:nth-child(2) .card-arrow,
+.card:nth-child(3) .card-arrow,
+.card:nth-child(4) .card-arrow,
+.card:nth-child(6) .card-arrow { background: rgba(0,0,0,0.08); }
+.card:hover .card-arrow { opacity: 1; transform: translateY(0); }
+.card-arrow svg { width: 12px; height: 12px; }
+.card:nth-child(1) .card-arrow svg,
+.card:nth-child(5) .card-arrow svg { stroke: rgba(255,255,255,0.8); }
+.card:nth-child(2) .card-arrow svg,
+.card:nth-child(3) .card-arrow svg,
+.card:nth-child(4) .card-arrow svg,
+.card:nth-child(6) .card-arrow svg { stroke: rgba(0,0,0,0.55); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-left {
   font-size: 11px;
-  opacity: 0.35;
-  letter-spacing: 0.08em;
+  font-family: var(--mono);
+  color: var(--mid);
+  letter-spacing: 0.07em;
 }
-
-/* ════════════════════════════
-   RESPONSIVE — TABLET (≤900px)
-════════════════════════════ */
-@media (max-width: 900px) {
-  .sidebar { display: none; }
-  .snap-container { left: 0; }
-  .panel-inner { padding: 40px 28px 36px; }
-  .split { grid-template-columns: 1fr; }
-  .split-text { padding: 32px 28px 28px; justify-content: flex-start; }
-  .split-visual { height: 45vh; }
-  .challenge-solution { grid-template-columns: 1fr; }
-  .cs-block { padding: 36px 28px; }
-  .stats-row { grid-template-columns: 1fr; }
-  .retail-grid { grid-template-columns: repeat(3, 1fr); }
-  .slider-arrow--prev { left: 16px; }
-  .slider-arrow--next { right: 16px; }
-  .panel--footer { padding: 0 28px; flex-direction: column; justify-content: center; gap: 12px; }
+.footer-right { display: flex; gap: 24px; }
+.footer-right a {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--mid);
+  text-decoration: none;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: color 0.2s;
 }
+.footer-right a:hover { color: var(--black); }
 
-/* ════════════════════════════
-   RESPONSIVE — MOBILE (≤640px)
-════════════════════════════ */
-@media (max-width: 640px) {
-  :root {
-    --hdr: 44px;
-    --sidebar-w: 0px;
-  }
-
-  /* Header */
-  header { padding: 0 20px; }
-  .hdr-collab { display: none; }
-  .mobile-nav-btn { display: flex; }
-
-  /* Mobile drawer visible */
-  .mobile-drawer { display: block; }
-
-  /* Section counter: smaller, bottom-left on mobile to avoid overlap */
-  .section-counter {
-    bottom: 20px;
-    right: 20px;
-    font-size: 9px;
-  }
-
-  /* Snap container */
-  .snap-container { left: 0; }
-
-  /* Panels */
-  .panel { height: calc(100dvh - var(--hdr)); }
-
-  /* Panel inner */
-  .panel-inner {
-    padding: 28px 20px 24px;
-    overflow-y: auto;
-  }
-
-  .sec-label { margin-bottom: 16px; }
-
-  .sec-h2 {
-    font-size: clamp(20px, 6.5vw, 32px);
-    margin-bottom: 16px;
-    letter-spacing: -0.025em;
-  }
-
-  .sec-body { font-size: 14px; line-height: 1.7; }
-
-  /* Full-bleed captions */
-  .panel--fullbleed .caption {
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    font-size: 9px;
-  }
-  .panel--fullbleed .overlay-text {
-    left: 20px;
-    right: 20px;
-    bottom: 36px;
-    font-size: 13px;
-  }
-
-  /* Challenge / Solution: stack vertically, scrollable */
-  .challenge-solution {
-    grid-template-columns: 1fr;
-    overflow-y: auto;
-  }
-  .cs-block {
-    padding: 28px 20px;
-    justify-content: flex-start;
-  }
-  .cs-block + .cs-block {
-    border-left: none;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .cs-tag { margin-bottom: 14px; }
-  .cs-body { font-size: 15px; }
-
-  /* Split panels: visual on top, text below */
-  .split {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    overflow-y: auto;
-    flex: 1;
-    min-height: 0;
-  }
-  /* Make visual a fixed portion on mobile */
-  .split-visual {
-    height: 40vw;
-    min-height: 180px;
-    max-height: 260px;
-    flex-shrink: 0;
-  }
-  .split-visual[style*="border-right"] {
-    border-right: none !important;
-    border-bottom: 1px solid var(--border);
-  }
-  .split-text {
-    padding: 24px 20px 28px;
-    justify-content: flex-start;
-    overflow-y: auto;
-  }
-
-  /* Outcome panel: full-width stacked */
-  .panel[data-section="s-outcome"] {
-    flex-direction: column !important;
-    overflow-y: auto;
-  }
-  .panel[data-section="s-outcome"] > div {
-    width: 100% !important;
-    flex: none !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--border);
-    padding: 28px 20px !important;
-  }
-  .panel[data-section="s-outcome"] > div:last-child {
-    border-bottom: none;
-  }
-  .stat-num { font-size: clamp(36px, 10vw, 56px); }
-
-  /* Customer voice panel: full-width stacked */
-  .panel[data-section="s-outcome-voice"] {
-    flex-direction: column !important;
-    overflow-y: auto;
-  }
-  .outcome-left {
-    width: 100%;
-    padding: 28px 20px 20px;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .outcome-right {
-    min-height: 260px;
-    max-height: 50vw;
-  }
-  .outcome-insta-grid { gap: 2px; }
-
-  /* Summary panel */
-  .panel[data-section="s-summary"] .panel-inner {
-    overflow-y: auto;
-  }
-  .summary-table th,
-  .summary-table td {
-    padding: 10px 12px;
-    font-size: 12px;
-  }
-  .summary-table th:first-child,
-  .summary-table td:first-child {
-    width: 100px;
-  }
-  .tag { font-size: 10px; padding: 3px 8px; }
-
-  /* Footer */
-  .panel--footer {
-    padding: 0 20px;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    height: calc(100dvh - var(--hdr));
-    text-align: center;
-  }
-
-  /* Slider arrows smaller on mobile */
-  .slider-arrow { width: 36px; height: 36px; font-size: 13px; }
-  .slider-arrow--prev { left: 12px; }
-  .slider-arrow--next { right: 12px; }
-}
-
-/* Very small phones */
-@media (max-width: 390px) {
-  .sec-h2 { font-size: 19px; }
-  .cs-body { font-size: 14px; }
-  .outcome-right { max-height: 44vw; }
+/* ── ANIMATIONS ── */
+@keyframes fadeIn  { to { opacity: 1; } }
+@keyframes lineDown {
+  0%   { top: -100%; }
+  100% { top: 100%; }
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="hdr-left">
-    <div class="hdr-brand">HAYAN</div>
-    <div class="hdr-collab">Design Director</div>
+<!-- FIXED HEADER -->
+<header id="hdr" class="on-dark">
+  <span class="hdr-name">Hye Min Eom</span>
+  <div class="hdr-right">
+    <a href="mailto:hyemin@example.com">Contact</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Resume</a>
   </div>
-  <!-- Mobile menu toggle -->
-  <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Toggle navigation">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="hdr-right">2021</div>
 </header>
 
-<!-- MOBILE DRAWER NAV -->
-<nav class="mobile-drawer" id="mobileDrawer">
-  <a href="#" data-target="s-intro" class="active">Intro</a>
-  <a href="#" data-target="s-challenge">Challenge</a>
-  <a href="#" data-target="s-logo">Logo</a>
-  <a href="#" data-target="s-product">Product / CMF</a>
-  <a href="#" data-target="s-packaging">Packaging</a>
-  <a href="#" data-target="s-outcome">Outcome</a>
-  <a href="#" data-target="s-summary">Summary</a>
-  <a href="#" data-target="s-process">Process</a>
-</nav>
-
-<!-- PROGRESS -->
-<div class="progress-bar" id="progressBar"></div>
-
-<!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
-  <a href="#" data-target="s-intro" class="active">Intro</a>
-  <a href="#" data-target="s-challenge">Challenge</a>
-  <a href="#" data-target="s-logo">Logo</a>
-  <a href="#" data-target="s-product">Product / CMF</a>
-  <a href="#" data-target="s-packaging">Packaging</a>
-  <a href="#" data-target="s-outcome">Outcome</a>
-  <a href="#" data-target="s-summary">Summary</a>
-  <a href="#" data-target="s-process">Process</a>
-</nav>
-
-<!-- SECTION COUNTER -->
-<div class="section-counter" id="sectionCounter">01 / 16</div>
-
-<!-- SNAP CONTAINER -->
-<div class="snap-container" id="snapContainer">
-
-  <!-- 01 · INTRO — full-bleed hero -->
-  <div class="panel panel--fullbleed" data-label="Intro" data-section="s-intro">
-    <img src="images/hero.jpg" alt="HAYAN — intro hero" />
-    <div class="caption">HAYAN — Sustainable lifestyle brand · 2021</div>
-  </div>
-
-  <!-- 01b · INTRO — product video -->
-  <div class="panel panel--fullbleed" data-label="Intro" data-section="s-intro-vid">
-    <video autoplay loop muted playsinline>
-      <source src="videos/product2.mp4" type="video/mp4">
-      <div class="img-ph dark">Video — material &amp; CMF</div>
+<!-- S1: VIDEO HERO -->
+  <section class="snap-full s-hero" id="sHero">
+    <video class="hero-video" autoplay loop muted playsinline>
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4" type="video/mp4">
     </video>
-    <div class="caption">CMF — material story</div>
-  </div>
-
-  <!-- 02 · CHALLENGE & SOLUTION -->
-  <div class="panel panel--dark" data-label="Challenge" data-section="s-challenge">
-    <div class="challenge-solution">
-      <div class="cs-block">
-        <div class="cs-tag r">The Challenge</div>
-        <p class="cs-body r d1">The eco-friendly toothbrush category had a ceiling. Bamboo handles, muted palettes, design that signaled virtue instead of desire. It never tried to appeal beyond the people who already cared. A higher price needed a reason to exist — without a brand to give it one, it would land as another apologetic eco product.</p>
-      </div>
-      <div class="cs-block">
-        <div class="cs-tag r">The Solution</div>
-        <p class="cs-body r d1">We reframed the entry point. Instead of competing on eco credentials, HAYAN led with desire. Objects worth wanting that happened to be sustainable. That meant building a brand identity, CMF language, and packaging system that could make someone want the product before they knew it was sustainable.</p>
-      </div>
+    <div class="hero-fade"></div>
+    <div class="scroll-cue">
+      <div class="scroll-cue-line"></div>
+      <span class="scroll-cue-label">Scroll</span>
     </div>
-  </div>
+  </section>
 
-  <!-- 03 · LOGO — full-bleed video -->
-  <div class="panel panel--fullbleed" data-label="Logo" data-section="s-logo">
-    <video autoplay loop muted playsinline>
-      <source src="videos/logo.mp4" type="video/mp4">
-      <div class="img-ph dark">Video — logo identity</div>
-    </video>
-    <div class="overlay-text r">Hand-stamped, deliberately imperfect. A mark that feels as raw and natural as the material behind it.</div>
-    <div class="caption">Logo — wordmark &amp; identity system</div>
-  </div>
+  <!-- S2: ALL CONTENT — free scroll after video snap -->
+  <section class="snap-free s-content" id="sContent">
 
-  <!-- 04 · PRODUCT / CMF — split -->
-  <div class="panel" data-label="Product / CMF" data-section="s-product" style="flex-direction:row; overflow:hidden;">
-    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
-      <div class="split-visual" style="border-right:1px solid var(--border);">
-        <img src="images/Product_a.jpg" alt="Product" />
-      </div>
-      <div class="split-text">
-        <div class="sec-label r">Product &amp; CMF</div>
-        <h2 class="sec-h2 r">Pistachio mint, not earth tones.</h2>
-        <p class="sec-body r d1">Eco products leaned earthy. HAYAN went the other direction. A pistachio mint that doesn't read as "eco." It reads as home. Handle angled toward the bristle head for easier reach. Bristle count increased from 1,000 to 2,500.</p>
-        <p class="sec-body r d2" style="margin-top:14px;">A toothbrush sits on the counter every day. Most users hide theirs. HAYAN was designed to be left out — something you'd be quietly proud to have on the counter.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 04b · PRODUCT/CMF — full image -->
-  <div class="panel panel--fullbleed" data-label="Product / CMF" data-section="s-product-img1">
-    <img src="images/Product_b.jpg" alt="Product detail" />
-    <div class="caption">Product — handle &amp; bristle detail</div>
-  </div>
-
-  <!-- 04c · PRODUCT/CMF — video -->
-  <div class="panel panel--fullbleed" data-label="Product / CMF" data-section="s-product-vid1">
-    <video autoplay loop muted playsinline>
-      <source src="videos/Product_v1.mp4" type="video/mp4">
-      <div class="img-ph dark">Video — product in motion</div>
-    </video>
-    <div class="caption">Product — in use</div>
-  </div>
-
-  <!-- 04d · PRODUCT/CMF — full image -->
-  <div class="panel panel--fullbleed" data-label="Product / CMF" data-section="s-product-img2">
-    <img src="images/Product_d.jpg" alt="CMF detail" />
-    <div class="caption">CMF — color, material, finish</div>
-  </div>
-
-  <!-- 04e · PRODUCT/CMF — full image -->
-  <div class="panel panel--fullbleed" data-label="Product / CMF" data-section="s-product-img3">
-    <img src="images/Product_e.jpg" alt="CMF detail" />
-    <div class="caption">CMF — adult &amp; children's range</div>
-  </div>
-
-  <!-- 05 · PACKAGING — split -->
-  <div class="panel" data-label="Packaging" data-section="s-packaging" style="flex-direction:row; overflow:hidden;">
-    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
-      <div class="split-visual" style="border-right:1px solid var(--border);">
-        <img src="images/package1.jpg" alt="Packaging" />
-      </div>
-      <div class="split-text">
-        <div class="sec-label r">Packaging</div>
-        <h2 class="sec-h2 r">Bold message, refined material.</h2>
-        <p class="sec-body r d1">Printed large on uncoated kraft, <em>I'm not plastic</em> functions less as packaging copy and more as a brand position made physical. No imagery. No eco iconography. Confidence communicated through what was left out.</p>
-        <p class="sec-body r d2" style="margin-top:14px;">The typographic choice was precise: I'M and PLA pulled into color within the phrase, surfacing both the voice and the material in a single gesture.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 05b · PACKAGING — full image -->
-  <div class="panel panel--fullbleed" data-label="Packaging" data-section="s-packaging-img1">
-    <img src="images/package4.jpg" alt="Packaging" />
-    <div class="caption">Packaging details</div>
-  </div>
-
-  <!-- 05c · PACKAGING — full image -->
-  <div class="panel panel--fullbleed" data-label="Packaging" data-section="s-packaging-img2">
-    <img src="images/package3.jpg" alt="Packaging" />
-    <div class="caption">Packaging details</div>
-  </div>
-
-  <!-- 07 · OUTCOME — stats + press -->
-  <div class="panel" data-label="Outcome" data-section="s-outcome" style="flex-direction:row; overflow:hidden;">
-    <!-- LEFT: stats -->
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:52px 64px; border-right:1px solid var(--border);">
-      <div class="sec-label r">Outcome</div>
-      <div class="r d1" style="display:flex; flex-direction:column; margin-top:8px;">
-        <div style="padding:36px 0; border-top:1px solid var(--border);">
-          <div class="stat-num">1,495%</div>
-          <div class="stat-label" style="margin-top:10px;">of crowdfunding goal — Wadiz</div>
-        </div>
-        <div style="padding:36px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-          <div class="stat-num">15+</div>
-          <div class="stat-label" style="margin-top:10px;">retail partners across Korea</div>
+    <!-- INTRO -->
+    <div class="s-intro" id="sIntro">
+      <div class="intro-eyebrow">Industrial Designer &nbsp;·&nbsp; New York City</div>
+      <h1 class="intro-headline">
+        Designing objects<br>that earn their <em>place.</em>
+      </h1>
+      <div class="intro-sub">
+        <p class="intro-bio">
+          Senior Industrial Designer at iOttie, working across product design, CMF, and brand strategy. I originated brands, developed products from brief to production, and built sub-brands from scratch — always with one eye on the object and one on the business.
+        </p>
+        <div class="intro-meta">
+          <div class="intro-meta-row">
+            <span class="intro-meta-key">Based</span>
+            <span class="intro-meta-val">New York City</span>
+          </div>
+          <div class="intro-meta-row">
+            <span class="intro-meta-key">Currently</span>
+            <span class="intro-meta-val">iOttie — Senior ID</span>
+          </div>
+          <div class="intro-meta-row">
+            <span class="intro-meta-key">Awards</span>
+            <span class="intro-meta-val">Red Dot 2026, iF 2025</span>
+          </div>
         </div>
       </div>
     </div>
-    <!-- RIGHT: press -->
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:52px 64px;">
-      <div class="sec-label r">Press</div>
-      <div class="r d1" style="display:flex; flex-direction:column; margin-top:8px;">
-        <div style="padding:36px 0; border-top:1px solid var(--border);">
-          <div style="font-size:clamp(22px,3.5vw,48px); font-weight:300; letter-spacing:-0.02em; line-height:1; margin-bottom:12px;">Hypebae</div>
-          <div class="stat-label" style="margin-bottom:16px;">Featured as a standout in Korean sustainable design</div>
-          <a href="https://hypebae.com/2021/12/hayan-toothbrushes-biodegradable-sustainable-design-launch-price" target="_blank" rel="noopener" style="font-size:10px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; color:var(--black); text-decoration:none; opacity:0.45; transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.45">Read article ↗</a>
+
+    <div class="divider"></div>
+
+    <!-- WORK GRID -->
+    <div class="work-header">
+      <span class="work-label">Selected Work</span>
+      <span class="work-count">06 Projects</span>
+    </div>
+
+    <div class="grid">
+
+      <!-- 01 — VELOX 5K -->
+      <a class="card" href="velox-5k/index.html">
+        <div class="card-img-ph">cover image</div>
+        <!-- <img class="card-img" src="velox-5k/images/cover.jpg"> -->
+        <div class="card-arrow"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+        <div class="card-body">
+          <div class="card-meta"><div class="card-tags"><span class="card-tag">ID</span><span class="card-tag">CMF</span></div><span class="card-year">2024</span></div>
+          <div class="card-title">Velox 5K Power Bank</div>
+          <div class="card-desc">iOttie — Consumer Electronics</div>
+          <div class="award-pip"><div class="pip-dot"></div><span class="pip-text">Red Dot Design Award 2026</span></div>
         </div>
-        <div style="padding:36px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-          <div style="font-size:clamp(18px,3.5vw,48px); font-weight:300; letter-spacing:-0.02em; line-height:1; margin-bottom:12px;">DDP D-magazine</div>
-          <div class="stat-label" style="margin-bottom:16px;">Interview in Dongdaemun Design Plaza's official magazine</div>
-          <a href="https://www.ddpdesignstore.org/board/view.php?page=26&bdId=magazine&sno=43" target="_blank" rel="noopener" style="font-size:10px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; color:var(--black); text-decoration:none; opacity:0.45; transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.45">Read interview ↗</a>
+      </a>
+
+      <!-- 02 — HAYAN -->
+      <a class="card" href="hayan/index.html">
+        <div class="card-img-ph">cover image</div>
+        <!-- <img class="card-img" src="hayan/images/cover.jpg"> -->
+        <div class="card-arrow"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+        <div class="card-body">
+          <div class="card-meta"><div class="card-tags"><span class="card-tag">Brand</span><span class="card-tag">ID</span></div><span class="card-year">2021</span></div>
+          <div class="card-title">HAYAN</div>
+          <div class="card-desc">Sustainable lifestyle brand — Co-founder & Design Director</div>
         </div>
+      </a>
+
+      <!-- 03 -->
+      <a class="card" href="#">
+        <div class="card-img-ph">cover image</div>
+        <div class="card-arrow"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+        <div class="card-body">
+          <div class="card-meta"><div class="card-tags"><span class="card-tag">TBD</span></div><span class="card-year">—</span></div>
+          <div class="card-title">Project 03</div><div class="card-desc">Coming soon</div>
+        </div>
+      </a>
+
+      <!-- 04 -->
+      <a class="card" href="#">
+        <div class="card-img-ph">cover image</div>
+        <div class="card-arrow"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+        <div class="card-body">
+          <div class="card-meta"><div class="card-tags"><span class="card-tag">TBD</span></div><span class="card-year">—</span></div>
+          <div class="card-title">Project 04</div><div class="card-desc">Coming soon</div>
+        </div>
+      </a>
+
+      <!-- 05 -->
+      <a class="card" href="#">
+        <div class="card-img-ph">cover image</div>
+        <div class="card-arrow"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+        <div class="card-body">
+          <div class="card-meta"><div class="card-tags"><span class="card-tag">TBD</span></div><span class="card-year">—</span></div>
+          <div class="card-title">Project 05</div><div class="card-desc">Coming soon</div>
+        </div>
+      </a>
+
+      <!-- 06 -->
+      <a class="card" href="#">
+        <div class="card-img-ph">cover image</div>
+        <div class="card-arrow"><svg viewBox="0 0 14 14" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12L12 2M12 2H5M12 2v7"/></svg></div>
+        <div class="card-body">
+          <div class="card-meta"><div class="card-tags"><span class="card-tag">TBD</span></div><span class="card-year">—</span></div>
+          <div class="card-title">Project 06</div><div class="card-desc">Coming soon</div>
+        </div>
+      </a>
+
+    </div>
+
+    <footer>
+      <span class="footer-left">© 2025 Hye Min Eom</span>
+      <div class="footer-right">
+        <a href="mailto:hyemin@example.com">Email</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
       </div>
-    </div>
-  </div>
+    </footer>
 
-  <!-- 07b · CUSTOMER — quotes + instagram -->
-  <div class="panel" data-label="Outcome" data-section="s-outcome-voice" style="flex-direction:row; overflow:hidden;">
-    <div class="outcome-left r">
-      <div class="sec-label">Customer Voice</div>
-      <div class="outcome-quotes">
-        <div class="outcome-quote">
-          <div class="oq-kr">인생칫솔이에요.</div>
-          <div class="oq-en">"The toothbrush of my life."</div>
-        </div>
-        <div class="outcome-quote">
-          <div class="oq-kr">디자인도 깔끔하고 세련돼서 욕실 인테리어와도 잘 어울려요.</div>
-          <div class="oq-en">"The design is clean and refined — it suits my bathroom interior."</div>
-        </div>
-        <div class="outcome-quote">
-          <div class="oq-kr">집들이 선물로 최고예요.</div>
-          <div class="oq-en">"The best housewarming gift."</div>
-        </div>
-        <div class="outcome-quote">
-          <div class="oq-kr">이전 칫솔에 대한 생각을 하게 됩니다.</div>
-          <div class="oq-en">"It made me reconsider my previous toothbrushes."</div>
-        </div>
-      </div>
-    </div>
-    <div class="outcome-right">
-      <div class="outcome-insta-grid">
-        <div class="outcome-insta-cell"><img src="images/instagram1.jpg" alt="Customer photo 1" /></div>
-        <div class="outcome-insta-cell"><img src="images/instagram2.jpg" alt="Customer photo 2" /></div>
-        <div class="outcome-insta-cell"><img src="images/instagram3.jpg" alt="Customer photo 3" /></div>
-        <div class="outcome-insta-cell"><img src="images/instagram4.jpg" alt="Customer photo 4" /></div>
-        <div class="outcome-insta-cell"><img src="images/instagram5.jpg" alt="Customer photo 5" /></div>
-        <div class="outcome-insta-cell"><img src="images/instagram6.jpg" alt="Customer photo 6" /></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 08 · SUMMARY -->
-  <div class="panel" data-label="Summary" data-section="s-summary">
-    <div class="panel-inner" style="overflow-y:auto;">
-      <div class="sec-label r">Summary</div>
-      <p class="sec-body r" style="max-width:580px; margin-bottom:24px; font-style:italic; opacity:0.65;">HAYAN began with a product brief and ended as a brand built around a single belief: caring for the planet shouldn't feel like a compromise.</p>
-      <table class="summary-table r d1">
-        <thead>
-          <tr><th>Category</th><th>Detail</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;width:140px;">Role</td>
-            <td>Design Director</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Year</td>
-            <td>2021</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Scope</td>
-            <td>
-              <div class="tag-row">
-                <span class="tag">Brand strategy</span>
-                <span class="tag">Naming</span>
-                <span class="tag">Logo &amp; identity</span>
-                <span class="tag">Product design</span>
-                <span class="tag">CMF</span>
-                <span class="tag">Packaging</span>
-                <span class="tag">Creative direction</span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Photographer</td>
-            <td>Kim Jae Hoon</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Visual Director</td>
-            <td>ES Consultancy</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--mono);font-size:11px;opacity:0.45;">Closing</td>
-            <td style="font-style:italic;opacity:0.6;">Sustainability without compromise. Beauty without apology.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 09 · PROCESS — ping-pong canvas video -->
-  <div class="panel panel--fullbleed" data-label="Process" data-section="s-process">
-    <!-- Hidden video used only as frame source -->
-    <video id="processVideo" muted playsinline preload="auto" style="display:none;">
-      <source src="videos/Progress.mp4" type="video/mp4">
-    </video>
-    <!-- Canvas renders frames forward + backward -->
-    <canvas id="processCanvas" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></canvas>
-    <!-- Fallback if video/canvas fails -->
-    <div class="img-ph dark" id="processFallback" style="display:none;">Video — design &amp; production process</div>
-    <div class="caption">Process — design to production</div>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="panel--footer" data-label="End">
-    <div class="footer-copy">© 2025 Hye Min Eom</div>
-    <div class="footer-copy">HAYAN — 2021</div>
-    <div class="footer-copy">All rights reserved</div>
-  </div>
-
-</div><!-- end snap-container -->
+  </section><!-- end s-content -->
 
 <script>
-// ── MOBILE NAV ──
-const mobileNavBtn = document.getElementById('mobileNavBtn');
-const mobileDrawer = document.getElementById('mobileDrawer');
-const drawerLinks = Array.from(mobileDrawer.querySelectorAll('a'));
+  const hdr     = document.getElementById('hdr');
+  const sHero   = document.getElementById('sHero');
 
-mobileNavBtn.addEventListener('click', () => {
-  const isOpen = mobileDrawer.classList.toggle('open');
-  mobileNavBtn.classList.toggle('open', isOpen);
-});
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      hdr.className = e.isIntersecting ? 'on-dark' : 'on-light';
+    });
+  }, { threshold: 0.3 });
 
-drawerLinks.forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const target = link.dataset.target;
-    const panel = panels.find(p => p.dataset.section === target);
-    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
-    mobileDrawer.classList.remove('open');
-    mobileNavBtn.classList.remove('open');
-  });
-});
-
-// Close drawer on outside tap
-document.addEventListener('touchstart', e => {
-  if (mobileDrawer.classList.contains('open') &&
-      !mobileDrawer.contains(e.target) &&
-      !mobileNavBtn.contains(e.target)) {
-    mobileDrawer.classList.remove('open');
-    mobileNavBtn.classList.remove('open');
-  }
-}, { passive: true });
-
-// ── MAIN NAV + SCROLL LOGIC ──
-const container = document.getElementById('snapContainer');
-const panels = Array.from(document.querySelectorAll('.panel, .panel--footer'));
-const sidebarLinks = Array.from(document.querySelectorAll('.sidebar a'));
-const counter = document.getElementById('sectionCounter');
-const progressBar = document.getElementById('progressBar');
-const total = panels.length;
-
-const sectionParentMap = {
-  's-intro-vid': 's-intro',
-  's-packaging-img1': 's-packaging',
-  's-packaging-img2': 's-packaging',
-  's-product-img1': 's-product',
-  's-product-vid1': 's-product',
-  's-product-img2': 's-product',
-  's-product-img3': 's-product',
-  's-outcome-voice': 's-outcome',
-};
-
-sidebarLinks.forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const target = link.dataset.target;
-    const panel = panels.find(p => p.dataset.section === target);
-    if (panel) panel.scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-const revealMap = new Map();
-panels.forEach(panel => {
-  revealMap.set(panel, panel.querySelectorAll('.r'));
-});
-
-function syncDrawerActive(sidebarTarget) {
-  drawerLinks.forEach(link => {
-    link.classList.toggle('active', link.dataset.target === sidebarTarget);
-  });
-}
-
-function activatePanel(index) {
-  const panel = panels[index];
-  const section = panel?.dataset?.section;
-  const sidebarTarget = sectionParentMap[section] || section;
-
-  sidebarLinks.forEach(link => {
-    link.classList.toggle('active', link.dataset.target === sidebarTarget);
-  });
-  syncDrawerActive(sidebarTarget);
-
-  counter.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
-  const pct = total > 1 ? (index / (total - 1)) * 100 : 100;
-  progressBar.style.width = pct + '%';
-
-  const els = revealMap.get(panel);
-  if (els) {
-    els.forEach(el => { el.classList.remove('in'); void el.offsetWidth; });
-    requestAnimationFrame(() => els.forEach(el => el.classList.add('in')));
-  }
-}
-
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const idx = panels.indexOf(e.target);
-      if (idx !== -1) activatePanel(idx);
-    }
-  });
-}, { root: container, threshold: 0.5 });
-
-panels.forEach(p => obs.observe(p));
-
-document.addEventListener('keydown', e => {
-  const scrollTop = container.scrollTop;
-  const panelHeight = container.clientHeight;
-  const currentIdx = Math.round(scrollTop / panelHeight);
-  if (e.key === 'ArrowDown' && currentIdx < total - 1) panels[currentIdx + 1].scrollIntoView({ behavior: 'smooth' });
-  else if (e.key === 'ArrowUp' && currentIdx > 0) panels[currentIdx - 1].scrollIntoView({ behavior: 'smooth' });
-});
-
-activatePanel(0);
-
-// ── PROCESS VIDEO PING-PONG ──
-// Scrubs video.currentTime directly — no frame capture, no memory spike.
-// Safe on mobile. Plays forward then backward in a smooth loop.
-(function () {
-  const video    = document.getElementById('processVideo');
-  const canvas   = document.getElementById('processCanvas');
-  const fallback = document.getElementById('processFallback');
-
-  if (!video || !canvas) return;
-
-  // On mobile, skip canvas entirely — just show the video element directly.
-  // Canvas drawImage from video is unreliable on iOS Safari.
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  let ctx = null;
-  if (!isMobile) {
-    ctx = canvas.getContext('2d');
-  } else {
-    // Hide canvas, show video directly (styled to cover)
-    canvas.style.display = 'none';
-    video.style.cssText = 'display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover;';
-  }
-
-  const SPEED     = 0.4;   // seconds of video time advanced per animation frame (~24fps playback feel)
-  let   direction = 1;     // 1 = forward, -1 = backward
-  let   rafId     = null;
-  let   active    = false;
-  let   duration  = 0;
-
-  function resizeCanvas() {
-    if (!ctx) return;
-    canvas.width  = canvas.offsetWidth  * Math.min(window.devicePixelRatio, 2);
-    canvas.height = canvas.offsetHeight * Math.min(window.devicePixelRatio, 2);
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  function drawToCanvas() {
-    if (!ctx) return;
-    const cw = canvas.width, ch = canvas.height;
-    const vw = video.videoWidth  || cw;
-    const vh = video.videoHeight || ch;
-    const scale = Math.max(cw / vw, ch / vh);
-    const dw = vw * scale, dh = vh * scale;
-    ctx.drawImage(video, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-  }
-
-  function tick() {
-    if (!active) return;
-    rafId = requestAnimationFrame(tick);
-
-    const next = video.currentTime + direction * SPEED * (1 / 60);
-    // Clamp and bounce
-    if (next >= duration) {
-      video.currentTime = duration - 0.001;
-      direction = -1;
-    } else if (next <= 0) {
-      video.currentTime = 0.001;
-      direction = 1;
-    } else {
-      video.currentTime = next;
-    }
-
-    if (ctx) drawToCanvas();
-  }
-
-  function start() {
-    if (active) return;
-    active = true;
-    // Mobile: just play/pause natively — we handle direction via currentTime
-    rafId = requestAnimationFrame(tick);
-  }
-
-  function stop() {
-    active = false;
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-  }
-
-  function showFallback() {
-    canvas.style.display   = 'none';
-    video.style.display    = 'none';
-    fallback.style.display = '';
-  }
-
-  function init() {
-    duration = video.duration;
-    if (!isFinite(duration) || duration === 0) { showFallback(); return; }
-    video.currentTime = 0;
-    // Need at least one seeked event before ticking so first frame is ready
-    video.addEventListener('seeked', function onReady() {
-      video.removeEventListener('seeked', onReady);
-      if (panelVisible) start();
-    }, { once: true });
-    video.currentTime = 0.001;
-  }
-
-  let panelVisible = false;
-  const processPanel = document.querySelector('[data-section="s-process"]');
-  if (processPanel) {
-    new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        panelVisible = e.isIntersecting;
-        if (panelVisible && duration > 0) start();
-        else stop();
-      });
-    }, { threshold: 0.3 }).observe(processPanel);
-  }
-
-  video.muted = true;
-  if (video.readyState >= 1) {
-    init();
-  } else {
-    video.addEventListener('loadedmetadata', init, { once: true });
-    video.addEventListener('error', showFallback,  { once: true });
-  }
-})();
+  io.observe(sHero);
 </script>
 </body>
 </html>
