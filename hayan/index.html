@@ -422,7 +422,8 @@ header {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* Top-align content so sec-label + first rule match across columns */
+  justify-content: flex-start;
   padding: 52px 64px;
   border-right: 1px solid var(--border);
   overflow: hidden;
@@ -431,19 +432,20 @@ header {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 52px 64px;
   overflow: hidden;
 }
+/* sec-label has margin-bottom: 28px — match both sides exactly */
 .outcome-stat-block {
-  padding: 36px 0;
+  padding: 28px 0;
   border-top: 1px solid var(--border);
 }
 .outcome-stat-block--bottom {
   border-bottom: 1px solid var(--border);
 }
 .outcome-press-block {
-  padding: 36px 0;
+  padding: 28px 0;
   border-top: 1px solid var(--border);
 }
 .outcome-press-block--bottom {
@@ -866,14 +868,13 @@ header {
   /* ── OUTCOME STATS + PRESS ── */
   .panel--outcome {
     flex-direction: column;
-    overflow: hidden; /* snap panel — no scroll, everything must fit */
+    overflow: hidden;
   }
-  /* Stats and press each take exactly half the panel height */
   .outcome-stats {
     flex: 1;
     min-height: 0;
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-bottom: none; /* no divider between the two halves */
     padding: 20px 20px 16px;
     justify-content: center;
     overflow: hidden;
