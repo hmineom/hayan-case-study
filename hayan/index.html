@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>HAYAN — A sustainable lifestyle brand</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,10 @@
   --mono: 'DM Mono', monospace;
   --hdr: 48px;
   --sidebar-w: 180px;
+  /* Safe areas for notched phones */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 html { scroll-behavior: smooth; }
@@ -32,6 +36,8 @@ body {
   font-size: 15px;
   line-height: 1.6;
   overflow: hidden;
+  /* Prevent pull-to-refresh interfering with snap */
+  overscroll-behavior: none;
 }
 
 header, .sidebar, .progress-bar, .section-counter { isolation: isolate; }
@@ -39,14 +45,19 @@ header, .sidebar, .progress-bar, .section-counter { isolation: isolate; }
 /* ── HEADER ── */
 header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Extend into safe area */
+  padding-top: env(safe-area-inset-top, 0px);
   z-index: 300;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
+  padding-left: calc(32px + var(--safe-left));
+  padding-right: calc(32px + var(--safe-right));
   height: var(--hdr);
 }
 .hdr-left { display: flex; align-items: center; gap: 20px; }
@@ -69,8 +80,8 @@ header {
 /* ── SECTION COUNTER ── */
 .section-counter {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
+  bottom: calc(32px + var(--safe-bottom));
+  right: calc(32px + var(--safe-right));
   z-index: 300;
   font-family: var(--mono);
   font-size: 10px;
@@ -90,6 +101,9 @@ header {
   gap: 5px;
   align-items: center;
   justify-content: center;
+  /* Larger tap target */
+  min-width: 44px;
+  min-height: 44px;
 }
 .mobile-nav-btn span {
   display: block;
@@ -113,6 +127,7 @@ header {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   padding: 16px 24px 20px;
+  padding-bottom: calc(20px + var(--safe-bottom));
   transform: translateY(-110%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 8px 24px rgba(0,0,0,0.07);
@@ -126,10 +141,14 @@ header {
   color: var(--black);
   text-decoration: none;
   opacity: 0.35;
-  padding: 9px 0;
+  padding: 11px 0;
   border-bottom: 1px solid var(--border);
   text-transform: uppercase;
   transition: opacity 0.15s;
+  /* Better tap target */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 .mobile-drawer a:last-child { border-bottom: none; }
 .mobile-drawer a.active { opacity: 1; font-weight: 500; }
@@ -140,7 +159,7 @@ header {
   top: var(--hdr);
   left: 0;
   width: var(--sidebar-w);
-  height: calc(100vh - var(--hdr));
+  height: calc(100dvh - var(--hdr));
   z-index: 250;
   border-right: 1px solid var(--border);
   background: var(--bg);
@@ -176,13 +195,16 @@ header {
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
+  /* Prevent bounce on iOS causing snap issues */
+  overscroll-behavior-y: contain;
 }
 
 /* ── PANELS ── */
 .panel {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  height: calc(100vh - var(--hdr));
+  /* Use dvh everywhere for consistent mobile behavior */
+  height: calc(100dvh - var(--hdr));
   width: 100%;
   position: relative;
   display: flex;
@@ -244,7 +266,7 @@ header {
 }
 .panel--fullbleed .caption {
   position: absolute;
-  bottom: 32px;
+  bottom: calc(32px + var(--safe-bottom));
   left: 48px;
   right: 48px;
   font-family: var(--mono);
@@ -256,7 +278,7 @@ header {
 }
 .panel--fullbleed .overlay-text {
   position: absolute;
-  bottom: 32px;
+  bottom: calc(56px + var(--safe-bottom));
   left: 48px;
   right: 48px;
   z-index: 2;
@@ -312,6 +334,10 @@ header {
 }
 
 /* ── SPLIT (image + text) ── */
+/* Replace inline grid styles with a class */
+.panel--split {
+  flex-direction: row;
+}
 .split {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -331,7 +357,6 @@ header {
   overflow: hidden;
   position: relative;
 }
-.split-visual .img-ph,
 .split-visual img,
 .split-visual video {
   width: 100%;
@@ -339,99 +364,95 @@ header {
   object-fit: cover;
   display: block;
 }
+.split-visual--bordered {
+  border-right: 1px solid var(--border);
+}
 
-/* ── PACKAGING SLIDER ── */
-.panel--pkg-slider {
-  background: var(--black);
-  position: relative;
+/* ── OUTCOME PANEL ── */
+.panel--outcome {
+  flex-direction: row;
+}
+.outcome-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 52px 64px;
+  border-right: 1px solid var(--border);
   overflow: hidden;
 }
-.pkg-slider-track {
+.outcome-press {
+  flex: 1;
   display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.pkg-slide {
-  min-width: 100%;
-  height: 100%;
-  position: relative;
-  flex-shrink: 0;
-}
-.pkg-slide img,
-.pkg-slide .img-ph {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.slider-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  background: none;
-  border: 1px solid rgba(255,255,255,0.25);
-  color: rgba(255,255,255,0.7);
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  padding: 52px 64px;
+  overflow: hidden;
 }
-.slider-arrow:hover {
-  border-color: rgba(255,255,255,0.7);
-  color: #fff;
-  background: rgba(255,255,255,0.08);
+.outcome-stat-block {
+  padding: 36px 0;
+  border-top: 1px solid var(--border);
 }
-.slider-arrow--prev { left: 32px; }
-.slider-arrow--next { right: 32px; }
-.slider-dots {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  gap: 8px;
-  align-items: center;
+.outcome-stat-block--bottom {
+  border-bottom: 1px solid var(--border);
 }
-.slider-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+.outcome-press-block {
+  padding: 36px 0;
+  border-top: 1px solid var(--border);
 }
-.slider-dot.active { background: #fff; transform: scale(1.3); }
-.slider-counter {
-  position: absolute;
-  top: 32px;
-  right: 48px;
-  z-index: 10;
+.outcome-press-block--bottom {
+  border-bottom: 1px solid var(--border);
+}
+.stat-num {
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.stat-label {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  opacity: 0.45;
 }
-.slider-label {
-  position: absolute;
-  bottom: 32px;
-  left: 48px;
-  z-index: 10;
+.press-name {
+  font-size: clamp(22px, 3.5vw, 48px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.press-desc {
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+  opacity: 0.45;
+  margin-bottom: 16px;
 }
+.press-link {
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+  /* Better tap target */
+  display: inline-block;
+  padding: 6px 0;
+  min-height: 44px;
+  line-height: 44px;
+}
+.press-link:hover { opacity: 1; }
 
-/* ── OUTCOME ── */
+/* ── CUSTOMER VOICE PANEL ── */
+.panel--voice {
+  flex-direction: row;
+}
 .outcome-left {
   width: 42%;
   flex-shrink: 0;
@@ -492,7 +513,7 @@ header {
   display: block;
 }
 
-/* ── STATS ── */
+/* ── STATS ROW (legacy, kept for compatibility) ── */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -506,20 +527,7 @@ header {
 }
 .stat-block:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
 .stat-block:first-child { padding-left: 0; }
-.stat-num {
-  font-size: clamp(40px, 5.5vw, 72px);
-  font-weight: 300;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.stat-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.45;
-}
+
 .retail-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -611,13 +619,14 @@ header {
 
 /* ── FOOTER PANEL ── */
 .panel--footer {
-  height: calc(100vh - var(--hdr));
+  height: calc(100dvh - var(--hdr));
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 72px;
+  padding-bottom: var(--safe-bottom);
   border-top: 1px solid var(--border);
 }
 .footer-copy {
@@ -634,15 +643,30 @@ header {
   .sidebar { display: none; }
   .snap-container { left: 0; }
   .panel-inner { padding: 40px 28px 36px; }
-  .split { grid-template-columns: 1fr; }
+
+  /* Split panels */
+  .panel--split { flex-direction: column; }
+  .split { grid-template-columns: 1fr; grid-template-rows: 45vh 1fr; }
   .split-text { padding: 32px 28px 28px; justify-content: flex-start; }
-  .split-visual { height: 45vh; }
-  .challenge-solution { grid-template-columns: 1fr; }
+  .split-visual--bordered { border-right: none; border-bottom: 1px solid var(--border); }
+
+  /* Challenge/solution */
+  .challenge-solution { grid-template-columns: 1fr; overflow-y: auto; }
   .cs-block { padding: 36px 28px; }
+  .cs-block + .cs-block { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
+
+  /* Outcome */
+  .panel--outcome { flex-direction: column; overflow-y: auto; }
+  .outcome-stats { flex: none; border-right: none; border-bottom: 1px solid var(--border); padding: 36px 28px; }
+  .outcome-press { flex: none; padding: 36px 28px; }
+
+  /* Voice */
+  .panel--voice { flex-direction: column; overflow-y: auto; }
+  .outcome-left { width: 100%; padding: 28px 28px 20px; border-right: none; border-bottom: 1px solid var(--border); }
+  .outcome-right { min-height: 260px; }
+
   .stats-row { grid-template-columns: 1fr; }
   .retail-grid { grid-template-columns: repeat(3, 1fr); }
-  .slider-arrow--prev { left: 16px; }
-  .slider-arrow--next { right: 16px; }
   .panel--footer { padding: 0 28px; flex-direction: column; justify-content: center; gap: 12px; }
 }
 
@@ -655,61 +679,66 @@ header {
     --sidebar-w: 0px;
   }
 
-  /* Header */
-  header { padding: 0 20px; }
+  /* ── HEADER ── */
+  header {
+    padding-left: calc(20px + var(--safe-left));
+    padding-right: calc(20px + var(--safe-right));
+  }
   .hdr-collab { display: none; }
   .mobile-nav-btn { display: flex; }
-
-  /* Mobile drawer visible */
   .mobile-drawer { display: block; }
 
-  /* Section counter: smaller, bottom-left on mobile to avoid overlap */
+  /* ── SECTION COUNTER ── */
   .section-counter {
-    bottom: 20px;
-    right: 20px;
+    bottom: calc(20px + var(--safe-bottom));
+    right: calc(20px + var(--safe-right));
     font-size: 9px;
   }
 
-  /* Snap container */
+  /* ── SNAP CONTAINER ── */
   .snap-container { left: 0; }
 
-  /* Panels */
-  .panel { height: calc(100dvh - var(--hdr)); }
+  /* ── PANELS — use dvh so address bar changes don't break snapping ── */
+  .panel,
+  .panel--footer {
+    height: calc(100dvh - var(--hdr));
+  }
 
-  /* Panel inner */
+  /* ── PANEL INNER ── */
   .panel-inner {
     padding: 28px 20px 24px;
+    /* Allow overflow on content-heavy panels */
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .sec-label { margin-bottom: 16px; }
-
   .sec-h2 {
     font-size: clamp(20px, 6.5vw, 32px);
     margin-bottom: 16px;
     letter-spacing: -0.025em;
   }
-
   .sec-body { font-size: 14px; line-height: 1.7; }
 
-  /* Full-bleed captions */
+  /* ── FULL-BLEED CAPTIONS ── */
   .panel--fullbleed .caption {
     left: 20px;
     right: 20px;
-    bottom: 20px;
+    bottom: calc(20px + var(--safe-bottom));
     font-size: 9px;
   }
   .panel--fullbleed .overlay-text {
     left: 20px;
     right: 20px;
-    bottom: 36px;
+    bottom: calc(42px + var(--safe-bottom));
     font-size: 13px;
   }
 
-  /* Challenge / Solution: stack vertically, scrollable */
+  /* ── CHALLENGE / SOLUTION ── */
   .challenge-solution {
     grid-template-columns: 1fr;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .cs-block {
     padding: 28px 20px;
@@ -722,23 +751,23 @@ header {
   .cs-tag { margin-bottom: 14px; }
   .cs-body { font-size: 15px; }
 
-  /* Split panels: visual on top, text below */
+  /* ── SPLIT PANELS ── */
+  .panel--split { flex-direction: column; }
   .split {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    /* Image height responsive to viewport */
+    grid-template-rows: min(42vw, 260px) 1fr;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     flex: 1;
     min-height: 0;
   }
-  /* Make visual a fixed portion on mobile */
   .split-visual {
-    height: 40vw;
-    min-height: 180px;
-    max-height: 260px;
-    flex-shrink: 0;
+    /* Let grid-template-rows control height */
+    height: auto;
   }
-  .split-visual[style*="border-right"] {
-    border-right: none !important;
+  .split-visual--bordered {
+    border-right: none;
     border-bottom: 1px solid var(--border);
   }
   .split-text {
@@ -747,76 +776,110 @@ header {
     overflow-y: auto;
   }
 
-  /* Outcome panel: full-width stacked */
-  .panel[data-section="s-outcome"] {
-    flex-direction: column !important;
+  /* ── OUTCOME STATS + PRESS ── */
+  .panel--outcome {
+    flex-direction: column;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .panel[data-section="s-outcome"] > div {
-    width: 100% !important;
-    flex: none !important;
-    border-right: none !important;
+  .outcome-stats {
+    flex: none;
+    border-right: none;
     border-bottom: 1px solid var(--border);
-    padding: 28px 20px !important;
+    padding: 28px 20px;
+    justify-content: flex-start;
   }
-  .panel[data-section="s-outcome"] > div:last-child {
-    border-bottom: none;
+  .outcome-press {
+    flex: none;
+    padding: 28px 20px;
+    justify-content: flex-start;
   }
-  .stat-num { font-size: clamp(36px, 10vw, 56px); }
+  .outcome-stat-block { padding: 24px 0; }
+  .outcome-press-block { padding: 24px 0; }
+  .stat-num { font-size: clamp(36px, 10vw, 60px); }
+  .press-name { font-size: clamp(20px, 7vw, 36px); }
 
-  /* Customer voice panel: full-width stacked */
-  .panel[data-section="s-outcome-voice"] {
-    flex-direction: column !important;
+  /* ── CUSTOMER VOICE ── */
+  .panel--voice {
+    flex-direction: column;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .outcome-left {
     width: 100%;
+    flex-shrink: 0;
     padding: 28px 20px 20px;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    justify-content: flex-start;
   }
   .outcome-right {
-    min-height: 260px;
-    max-height: 50vw;
+    flex-shrink: 0;
+    height: min(50vw, 280px);
   }
   .outcome-insta-grid { gap: 2px; }
 
-  /* Summary panel */
+  /* ── SUMMARY ── */
   .panel[data-section="s-summary"] .panel-inner {
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .summary-table th,
-  .summary-table td {
-    padding: 10px 12px;
-    font-size: 12px;
-  }
+  .summary-table td { padding: 10px 12px; font-size: 12px; }
   .summary-table th:first-child,
-  .summary-table td:first-child {
-    width: 100px;
-  }
+  .summary-table td:first-child { width: 100px; }
   .tag { font-size: 10px; padding: 3px 8px; }
 
-  /* Footer */
+  /* ── FOOTER ── */
   .panel--footer {
     padding: 0 20px;
+    padding-bottom: var(--safe-bottom);
     flex-direction: column;
     justify-content: center;
     gap: 10px;
-    height: calc(100dvh - var(--hdr));
     text-align: center;
   }
 
-  /* Slider arrows smaller on mobile */
-  .slider-arrow { width: 36px; height: 36px; font-size: 13px; }
-  .slider-arrow--prev { left: 12px; }
-  .slider-arrow--next { right: 12px; }
+  /* ── PROCESS PANEL CANVAS ── */
+  #processCanvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* ── PRESS LINKS — better tap targets on mobile ── */
+  .press-link {
+    padding: 10px 0;
+    line-height: 1.4;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
-/* Very small phones */
+/* ── VERY SMALL PHONES ── */
 @media (max-width: 390px) {
   .sec-h2 { font-size: 19px; }
   .cs-body { font-size: 14px; }
-  .outcome-right { max-height: 44vw; }
+  .outcome-right { height: min(44vw, 200px); }
+  .outcome-stat-block { padding: 18px 0; }
+  .outcome-press-block { padding: 18px 0; }
+}
+
+/* ── LANDSCAPE MOBILE — special handling ── */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  /* On landscape phones, panels can scroll internally rather than fighting snap */
+  .challenge-solution { overflow-y: auto; }
+  .panel--outcome { overflow-y: auto; }
+  .panel--voice { overflow-y: auto; }
+  .panel--split .split { overflow-y: auto; }
+
+  /* Reduce padding to fit content */
+  .cs-block { padding: 20px 20px; }
+  .outcome-stats, .outcome-press { padding: 20px; }
+  .outcome-left { padding: 20px; }
+  .split-text { padding: 20px; }
+  .panel-inner { padding: 20px; }
+
+  /* Shrink fixed-height visual on landscape */
+  .split { grid-template-rows: 40% 60%; }
+  .outcome-right { height: 40vw; }
 }
 </style>
 </head>
@@ -899,9 +962,9 @@ header {
   </div>
 
   <!-- 04 · PRODUCT / CMF — split -->
-  <div class="panel" data-label="Product / CMF" data-section="s-product" style="flex-direction:row; overflow:hidden;">
-    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
-      <div class="split-visual" style="border-right:1px solid var(--border);">
+  <div class="panel panel--split" data-label="Product / CMF" data-section="s-product">
+    <div class="split">
+      <div class="split-visual split-visual--bordered">
         <img src="../images/Product_a.jpg" alt="Product" />
       </div>
       <div class="split-text">
@@ -941,9 +1004,9 @@ header {
   </div>
 
   <!-- 05 · PACKAGING — split -->
-  <div class="panel" data-label="Packaging" data-section="s-packaging" style="flex-direction:row; overflow:hidden;">
-    <div class="split" style="flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:0;">
-      <div class="split-visual" style="border-right:1px solid var(--border);">
+  <div class="panel panel--split" data-label="Packaging" data-section="s-packaging">
+    <div class="split">
+      <div class="split-visual split-visual--bordered">
         <img src="../images/package1.jpg" alt="Packaging" />
       </div>
       <div class="split-text">
@@ -968,41 +1031,41 @@ header {
   </div>
 
   <!-- 07 · OUTCOME — stats + press -->
-  <div class="panel" data-label="Outcome" data-section="s-outcome" style="flex-direction:row; overflow:hidden;">
+  <div class="panel panel--outcome" data-label="Outcome" data-section="s-outcome">
     <!-- LEFT: stats -->
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:52px 64px; border-right:1px solid var(--border);">
+    <div class="outcome-stats">
       <div class="sec-label r">Outcome</div>
-      <div class="r d1" style="display:flex; flex-direction:column; margin-top:8px;">
-        <div style="padding:36px 0; border-top:1px solid var(--border);">
+      <div class="r d1">
+        <div class="outcome-stat-block">
           <div class="stat-num">1,495%</div>
           <div class="stat-label" style="margin-top:10px;">of crowdfunding goal — Wadiz</div>
         </div>
-        <div style="padding:36px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+        <div class="outcome-stat-block outcome-stat-block--bottom">
           <div class="stat-num">15+</div>
           <div class="stat-label" style="margin-top:10px;">retail partners across Korea</div>
         </div>
       </div>
     </div>
     <!-- RIGHT: press -->
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:52px 64px;">
+    <div class="outcome-press">
       <div class="sec-label r">Press</div>
-      <div class="r d1" style="display:flex; flex-direction:column; margin-top:8px;">
-        <div style="padding:36px 0; border-top:1px solid var(--border);">
-          <div style="font-size:clamp(22px,3.5vw,48px); font-weight:300; letter-spacing:-0.02em; line-height:1; margin-bottom:12px;">Hypebae</div>
-          <div class="stat-label" style="margin-bottom:16px;">Featured as a standout in Korean sustainable design</div>
-          <a href="https://hypebae.com/2021/12/hayan-toothbrushes-biodegradable-sustainable-design-launch-price" target="_blank" rel="noopener" style="font-size:10px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; color:var(--black); text-decoration:none; opacity:0.45; transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.45">Read article ↗</a>
+      <div class="r d1">
+        <div class="outcome-press-block">
+          <div class="press-name">Hypebae</div>
+          <div class="press-desc">Featured as a standout in Korean sustainable design</div>
+          <a href="https://hypebae.com/2021/12/hayan-toothbrushes-biodegradable-sustainable-design-launch-price" target="_blank" rel="noopener" class="press-link">Read article ↗</a>
         </div>
-        <div style="padding:36px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-          <div style="font-size:clamp(18px,3.5vw,48px); font-weight:300; letter-spacing:-0.02em; line-height:1; margin-bottom:12px;">DDP D-magazine</div>
-          <div class="stat-label" style="margin-bottom:16px;">Interview in Dongdaemun Design Plaza's official magazine</div>
-          <a href="https://www.ddpdesignstore.org/board/view.php?page=26&bdId=magazine&sno=43" target="_blank" rel="noopener" style="font-size:10px; font-family:var(--mono); letter-spacing:0.1em; text-transform:uppercase; color:var(--black); text-decoration:none; opacity:0.45; transition:opacity 0.15s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.45">Read interview ↗</a>
+        <div class="outcome-press-block outcome-press-block--bottom">
+          <div class="press-name" style="font-size:clamp(18px,3.5vw,48px);">DDP D-magazine</div>
+          <div class="press-desc">Interview in Dongdaemun Design Plaza's official magazine</div>
+          <a href="https://www.ddpdesignstore.org/board/view.php?page=26&bdId=magazine&sno=43" target="_blank" rel="noopener" class="press-link">Read interview ↗</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- 07b · CUSTOMER — quotes + instagram -->
-  <div class="panel" data-label="Outcome" data-section="s-outcome-voice" style="flex-direction:row; overflow:hidden;">
+  <div class="panel panel--voice" data-label="Outcome" data-section="s-outcome-voice">
     <div class="outcome-left r">
       <div class="sec-label">Customer Voice</div>
       <div class="outcome-quotes">
@@ -1038,7 +1101,7 @@ header {
 
   <!-- 08 · SUMMARY -->
   <div class="panel" data-label="Summary" data-section="s-summary">
-    <div class="panel-inner" style="overflow-y:auto;">
+    <div class="panel-inner" style="overflow-y:auto; -webkit-overflow-scrolling:touch;">
       <div class="sec-label r">Summary</div>
       <p class="sec-body r" style="max-width:580px; margin-bottom:24px; font-style:italic; opacity:0.65;">HAYAN began with a product brief and ended as a brand built around a single belief: caring for the planet shouldn't feel like a compromise.</p>
       <table class="summary-table r d1">
@@ -1087,13 +1150,10 @@ header {
 
   <!-- 09 · PROCESS — ping-pong canvas video -->
   <div class="panel panel--fullbleed" data-label="Process" data-section="s-process">
-    <!-- Hidden video used only as frame source -->
     <video id="processVideo" muted playsinline preload="auto" style="display:none;">
       <source src="../videos/Progress.mp4" type="video/mp4">
     </video>
-    <!-- Canvas renders frames forward + backward -->
     <canvas id="processCanvas" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;"></canvas>
-    <!-- Fallback if video/canvas fails -->
     <div class="img-ph dark" id="processFallback" style="display:none;">Video — design &amp; production process</div>
     <div class="caption">Process — design to production</div>
   </div>
@@ -1199,6 +1259,7 @@ function activatePanel(index) {
   }
 }
 
+// Use IntersectionObserver with a threshold that works well across viewport sizes
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1210,6 +1271,7 @@ const obs = new IntersectionObserver(entries => {
 
 panels.forEach(p => obs.observe(p));
 
+// Keyboard navigation
 document.addEventListener('keydown', e => {
   const scrollTop = container.scrollTop;
   const panelHeight = container.clientHeight;
@@ -1218,11 +1280,32 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'ArrowUp' && currentIdx > 0) panels[currentIdx - 1].scrollIntoView({ behavior: 'smooth' });
 });
 
+// Handle iOS viewport resize (address bar show/hide) — re-snap to current panel
+let resizeTimer;
+let lastKnownIndex = 0;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    // Re-scroll to current panel after resize settles (address bar change)
+    if (panels[lastKnownIndex]) {
+      panels[lastKnownIndex].scrollIntoView({ behavior: 'instant' });
+    }
+  }, 100);
+});
+
+// Track current panel index for resize handler
+const indexTracker = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      lastKnownIndex = panels.indexOf(e.target);
+    }
+  });
+}, { root: container, threshold: 0.5 });
+panels.forEach(p => indexTracker.observe(p));
+
 activatePanel(0);
 
 // ── PROCESS VIDEO PING-PONG ──
-// Scrubs video.currentTime directly — no frame capture, no memory spike.
-// Safe on mobile. Plays forward then backward in a smooth loop.
 (function () {
   const video    = document.getElementById('processVideo');
   const canvas   = document.getElementById('processCanvas');
@@ -1230,21 +1313,19 @@ activatePanel(0);
 
   if (!video || !canvas) return;
 
-  // On mobile, skip canvas entirely — just show the video element directly.
-  // Canvas drawImage from video is unreliable on iOS Safari.
+  // On mobile, skip canvas — direct video is more reliable on iOS Safari
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   let ctx = null;
   if (!isMobile) {
     ctx = canvas.getContext('2d');
   } else {
-    // Hide canvas, show video directly (styled to cover)
     canvas.style.display = 'none';
     video.style.cssText = 'display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover;';
   }
 
-  const SPEED     = 0.4;   // seconds of video time advanced per animation frame (~24fps playback feel)
-  let   direction = 1;     // 1 = forward, -1 = backward
+  const SPEED     = 0.4;
+  let   direction = 1;
   let   rafId     = null;
   let   active    = false;
   let   duration  = 0;
@@ -1270,9 +1351,7 @@ activatePanel(0);
   function tick() {
     if (!active) return;
     rafId = requestAnimationFrame(tick);
-
     const next = video.currentTime + direction * SPEED * (1 / 60);
-    // Clamp and bounce
     if (next >= duration) {
       video.currentTime = duration - 0.001;
       direction = -1;
@@ -1282,14 +1361,12 @@ activatePanel(0);
     } else {
       video.currentTime = next;
     }
-
     if (ctx) drawToCanvas();
   }
 
   function start() {
     if (active) return;
     active = true;
-    // Mobile: just play/pause natively — we handle direction via currentTime
     rafId = requestAnimationFrame(tick);
   }
 
@@ -1308,7 +1385,6 @@ activatePanel(0);
     duration = video.duration;
     if (!isFinite(duration) || duration === 0) { showFallback(); return; }
     video.currentTime = 0;
-    // Need at least one seeked event before ticking so first frame is ready
     video.addEventListener('seeked', function onReady() {
       video.removeEventListener('seeked', onReady);
       if (panelVisible) start();
@@ -1333,7 +1409,7 @@ activatePanel(0);
     init();
   } else {
     video.addEventListener('loadedmetadata', init, { once: true });
-    video.addEventListener('error', showFallback,  { once: true });
+    video.addEventListener('error', showFallback, { once: true });
   }
 })();
 </script>
