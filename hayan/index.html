@@ -456,6 +456,8 @@ header {
   .outcome-press {
     display: grid;
     grid-template-rows: 48px 1fr 1fr;
+    padding: 52px 64px;
+    box-sizing: border-box;
   }
   .outcome-stats .sec-label,
   .outcome-press .sec-label {
@@ -468,6 +470,9 @@ header {
     flex-direction: column;
     justify-content: center;
     padding: 0;
+    /* Stretch to fill full grid cell width — no implicit shrinkage */
+    align-self: stretch;
+    min-width: 0;
   }
   .outcome-stats .r,
   .outcome-press .r {
