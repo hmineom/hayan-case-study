@@ -322,41 +322,9 @@ header {
 }
 
 /* ── MEDIA PAIR ──
-   Desktop: two separate full-bleed panels visible, combined hidden.
-   Mobile:  separate panels hidden, combined shown.
-── */
-.panel--media-pair-a,
-.panel--media-pair-b { display: flex; } /* visible on desktop */
-.panel--media-combined { display: none; } /* hidden on desktop */
 
-/* Combined panel styles (only active on mobile) */
-.panel--media-combined {
-  background: var(--black);
-  flex-direction: column;
-}
-.media-combined-half {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-}
-.media-combined-half img,
-.media-combined-half video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 
-/* ── PACKAGING PAIR ── */
-.panel--pkg-pair-a,
-.panel--pkg-pair-b { display: flex; }
-.panel--pkg-combined {
-  display: none;
-  background: var(--black);
-  flex-direction: column;
-}
+
 
 /* ── PANEL VARIANTS ── */
 .panel--dark { background: var(--black); color: var(--bg); }
@@ -636,8 +604,8 @@ header {
   text-align: left;
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
   opacity: 0.35;
   border-bottom: 1px solid var(--border);
   padding: 8px 16px;
@@ -779,30 +747,14 @@ header {
   }
   .mobile-drawer { display: block; }
 
-  /* ── PACKAGING PAIR: swap on mobile ── */
-  .panel--pkg-pair-a,
-  .panel--pkg-pair-b {
-    display: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    scroll-snap-align: none !important;
-  }
-  .panel--pkg-combined {
-    display: flex !important;
-    flex-direction: column !important;
-    height: calc(100dvh - var(--hdr)) !important;
-    min-height: calc(100dvh - var(--hdr)) !important;
-    overflow: hidden !important;
-    scroll-snap-align: start !important;
-    scroll-snap-stop: always !important;
-  }
 
-  /* ── CONTAIN PANELS: show full image on white bg on mobile ── */
+
+  /* ── CONTAIN PANELS: show full image/video on white bg on mobile ── */
   .panel--contain-mobile {
     background: var(--bg) !important;
   }
-  .panel--contain-mobile img {
+  .panel--contain-mobile img,
+  .panel--contain-mobile video {
     object-fit: contain !important;
     object-position: center center !important;
   }
@@ -856,24 +808,7 @@ header {
     font-size: 13px;
   }
 
-  /* ── MEDIA PAIR: swap separate → combined on mobile ── */
-  .panel--media-pair-a,
-  .panel--media-pair-b {
-    display: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    scroll-snap-align: none !important;
-  }
-  .panel--media-combined {
-    display: flex !important;
-    flex-direction: column !important;
-    height: calc(100dvh - var(--hdr)) !important;
-    min-height: calc(100dvh - var(--hdr)) !important;
-    overflow: hidden !important;
-    scroll-snap-align: start !important;
-    scroll-snap-stop: always !important;
-  }
+
 
   /* ── CHALLENGE / SOLUTION ── */
   .challenge-solution {
@@ -926,25 +861,35 @@ header {
   /* ── OUTCOME STATS + PRESS ── */
   .panel--outcome {
     flex-direction: column;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden; /* snap panel — no scroll, everything must fit */
   }
+  /* Stats and press each take exactly half the panel height */
   .outcome-stats {
-    flex: none;
+    flex: 1;
+    min-height: 0;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    padding: 28px 20px;
-    justify-content: flex-start;
+    padding: 20px 20px 16px;
+    justify-content: center;
+    overflow: hidden;
   }
   .outcome-press {
-    flex: none;
-    padding: 28px 20px;
-    justify-content: flex-start;
+    flex: 1;
+    min-height: 0;
+    padding: 20px 20px 16px;
+    justify-content: center;
+    overflow: hidden;
   }
-  .outcome-stat-block { padding: 24px 0; }
-  .outcome-press-block { padding: 24px 0; }
-  .stat-num { font-size: clamp(36px, 10vw, 60px); }
-  .press-name { font-size: clamp(20px, 7vw, 36px); }
+  /* Remove the extra bottom border on the second stat block — that's the X line */
+  .outcome-stat-block--bottom { border-bottom: none; }
+  .outcome-stat-block { padding: 12px 0; }
+  .outcome-press-block { padding: 12px 0; }
+  .outcome-press-block--bottom { border-bottom: none; }
+  .stat-num { font-size: clamp(32px, 9vw, 52px); }
+  .stat-label { font-size: 9px; margin-top: 6px !important; }
+  .press-name { font-size: clamp(18px, 6vw, 32px); margin-bottom: 6px; }
+  .press-desc { margin-bottom: 8px; }
+  .press-link { min-height: 32px; line-height: 32px; }
 
   /* ── CUSTOMER VOICE ── */
   .panel--voice {
@@ -1129,30 +1074,19 @@ header {
     </div>
   </div>
 
-  <!-- 04b+c · PRODUCT/CMF — image + video (desktop: two snap panels; mobile: one stacked panel) -->
-  <div class="panel panel--fullbleed panel--media-pair-a" data-label="Product / CMF" data-section="s-product-img1">
+  <!-- 04b · PRODUCT/CMF — full image -->
+  <div class="panel panel--fullbleed panel--contain-mobile" data-label="Product / CMF" data-section="s-product-img1">
     <img src="../images/Product_b.jpg" alt="Product detail" />
     <div class="caption">Product — handle &amp; bristle detail</div>
   </div>
 
-  <div class="panel panel--fullbleed panel--media-pair-b" data-label="Product / CMF" data-section="s-product-vid1">
+  <!-- 04c · PRODUCT/CMF — video -->
+  <div class="panel panel--fullbleed panel--contain-mobile" data-label="Product / CMF" data-section="s-product-vid1">
     <video autoplay loop muted playsinline>
       <source src="../videos/Product_v1.mp4" type="video/mp4">
       <div class="img-ph dark">Video — product in motion</div>
     </video>
     <div class="caption">Product — in use</div>
-  </div>
-
-  <!-- Mobile-only combined panel: two images side by side, each 50% width, full height -->
-  <div class="panel panel--media-combined" data-label="Product / CMF" data-section="s-product-combined">
-    <div class="media-combined-half">
-      <img src="../images/Product_b.jpg" alt="Product detail" />
-    </div>
-    <div class="media-combined-half">
-      <video autoplay loop muted playsinline>
-        <source src="../videos/Product_v1.mp4" type="video/mp4">
-      </video>
-    </div>
   </div>
 
   <!-- 04d · PRODUCT/CMF — full image -->
@@ -1182,25 +1116,16 @@ header {
     </div>
   </div>
 
-  <!-- 05b+c · PACKAGING — desktop: two panels; mobile: one stacked panel -->
-  <div class="panel panel--fullbleed panel--pkg-pair-a" data-label="Packaging" data-section="s-packaging-img1">
+  <!-- 05b · PACKAGING — full image -->
+  <div class="panel panel--fullbleed panel--contain-mobile" data-label="Packaging" data-section="s-packaging-img1">
     <img src="../images/package4.jpg" alt="Packaging" />
     <div class="caption">Packaging details</div>
   </div>
 
-  <div class="panel panel--fullbleed panel--pkg-pair-b" data-label="Packaging" data-section="s-packaging-img2">
+  <!-- 05c · PACKAGING — full image -->
+  <div class="panel panel--fullbleed panel--contain-mobile" data-label="Packaging" data-section="s-packaging-img2">
     <img src="../images/package3.jpg" alt="Packaging" />
     <div class="caption">Packaging details</div>
-  </div>
-
-  <!-- Mobile-only: both packaging images stacked 50/50 -->
-  <div class="panel panel--pkg-combined" data-label="Packaging" data-section="s-packaging-combined">
-    <div class="media-combined-half">
-      <img src="../images/package4.jpg" alt="Packaging details" />
-    </div>
-    <div class="media-combined-half">
-      <img src="../images/package3.jpg" alt="Packaging details" />
-    </div>
   </div>
 
   <!-- 07 · OUTCOME — stats + press -->
