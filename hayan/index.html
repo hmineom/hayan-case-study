@@ -43,12 +43,14 @@ body {
 header, .sidebar, .progress-bar, .section-counter { isolation: isolate; }
 
 /* ── HEADER ── */
+:root {
+  --hdr-px: 32px; /* horizontal padding — same on both sides */
+}
 header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  /* Extend into safe area */
   padding-top: env(safe-area-inset-top, 0px);
   z-index: 300;
   background: var(--bg);
@@ -56,10 +58,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: calc(32px + var(--safe-left));
-  padding-right: calc(32px + var(--safe-right));
+  /* Equal padding left and right — sidebar offset doesn't affect header */
+  padding-left: calc(var(--hdr-px) + var(--safe-left));
+  padding-right: calc(var(--hdr-px) + var(--safe-right));
   height: var(--hdr);
 }
+/* Left group: brand + label, evenly gapped */
 .hdr-left { display: flex; align-items: center; gap: 20px; }
 .hdr-brand {
   font-size: 13px;
@@ -68,18 +72,46 @@ header {
   color: var(--black);
   text-decoration: none;
   transition: opacity 0.15s;
+  /* Vertically center text within tap area */
+  display: flex;
+  align-items: center;
+  height: var(--hdr);
 }
 .hdr-brand:hover { opacity: 0.5; }
-.hdr-collab { font-size: 11px; font-family: var(--mono); opacity: 0.4; letter-spacing: 0.08em; }
-.hdr-right { display: flex; align-items: center; }
+.hdr-collab {
+  font-size: 11px;
+  font-family: var(--mono);
+  opacity: 0.4;
+  letter-spacing: 0.08em;
+}
+/* Right group: year label OR hamburger — same height as header */
+.hdr-right {
+  display: flex;
+  align-items: center;
+  height: var(--hdr);
+}
 .hdr-year {
   font-size: 11px;
   font-family: var(--mono);
   opacity: 0.4;
   letter-spacing: 0.08em;
 }
-/* Hamburger hidden on desktop */
-.mobile-nav-btn { display: none; }
+/* Hamburger: hidden on desktop, perfectly centred when visible */
+.mobile-nav-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* Fill the full header height so tap target is generous */
+  width: var(--hdr);
+  height: var(--hdr);
+  /* Offset the right padding so the lines optically align with the edge */
+  margin-right: calc(-1 * var(--hdr-px) + 12px);
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ── PROGRESS ── */
 .progress-bar {
@@ -105,23 +137,6 @@ header {
   opacity: 0.4;
 }
 
-/* ── MOBILE NAV TOGGLE ── */
-.mobile-nav-btn {
-  /* Always in the DOM; hidden on desktop via CSS */
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  flex-direction: column;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-  /* 44px tap target */
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-}
 .mobile-nav-btn span {
   display: block;
   width: 18px;
@@ -327,7 +342,12 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   overflow: hidden;
+}
+.cs-block-inner {
+  width: 100%;
+  max-width: 480px;
 }
 .cs-block + .cs-block {
   border-left: 1px solid rgba(255,255,255,0.08);
@@ -707,14 +727,19 @@ header {
   }
 
   /* ── HEADER ── */
+  :root { --hdr-px: 20px; }
   header {
-    padding-left: calc(20px + var(--safe-left));
-    padding-right: calc(20px + var(--safe-right));
+    padding-left: calc(var(--hdr-px) + var(--safe-left));
+    padding-right: calc(var(--hdr-px) + var(--safe-right));
   }
   .hdr-collab { display: none; }
-  /* Swap: hide year text, show hamburger */
+  /* Swap: hide year label, show hamburger */
   .hdr-year { display: none; }
-  .mobile-nav-btn { display: flex; }
+  .mobile-nav-btn {
+    display: flex;
+    /* Re-align offset for mobile padding */
+    margin-right: calc(-1 * var(--hdr-px) + 12px);
+  }
   .mobile-drawer { display: block; }
 
   /* ── SECTION COUNTER ── */
@@ -974,12 +999,16 @@ header {
   <div class="panel panel--dark" data-label="Challenge" data-section="s-challenge">
     <div class="challenge-solution">
       <div class="cs-block">
-        <div class="cs-tag r">The Challenge</div>
-        <p class="cs-body r d1">The eco-friendly toothbrush category had a ceiling. Bamboo handles, muted palettes, design that signaled virtue instead of desire. It never tried to appeal beyond the people who already cared. A higher price needed a reason to exist — without a brand to give it one, it would land as another apologetic eco product.</p>
+        <div class="cs-block-inner">
+          <div class="cs-tag r">The Challenge</div>
+          <p class="cs-body r d1">The eco-friendly toothbrush category had a ceiling. Bamboo handles, muted palettes, design that signaled virtue instead of desire. It never tried to appeal beyond the people who already cared. A higher price needed a reason to exist — without a brand to give it one, it would land as another apologetic eco product.</p>
+        </div>
       </div>
       <div class="cs-block">
-        <div class="cs-tag r">The Solution</div>
-        <p class="cs-body r d1">We reframed the entry point. Instead of competing on eco credentials, HAYAN led with desire. Objects worth wanting that happened to be sustainable. That meant building a brand identity, CMF language, and packaging system that could make someone want the product before they knew it was sustainable.</p>
+        <div class="cs-block-inner">
+          <div class="cs-tag r">The Solution</div>
+          <p class="cs-body r d1">We reframed the entry point. Instead of competing on eco credentials, HAYAN led with desire. Objects worth wanting that happened to be sustainable. That meant building a brand identity, CMF language, and packaging system that could make someone want the product before they knew it was sustainable.</p>
+        </div>
       </div>
     </div>
   </div>
