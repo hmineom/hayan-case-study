@@ -698,8 +698,8 @@ header {
   .split-visual--bordered { border-right: none; border-bottom: 1px solid var(--border); }
 
   /* Challenge/solution */
-  .challenge-solution { grid-template-columns: 1fr; overflow-y: auto; }
-  .cs-block { padding: 36px 28px; }
+  .challenge-solution { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; overflow: hidden; }
+  .cs-block { padding: 36px 28px; justify-content: center; overflow: hidden; }
   .cs-block + .cs-block { border-left: none; border-top: 1px solid rgba(255,255,255,0.08); }
 
   /* Outcome */
@@ -791,17 +791,21 @@ header {
   /* ── CHALLENGE / SOLUTION ── */
   .challenge-solution {
     grid-template-columns: 1fr;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    /* Equal halves so each block has room to center its content */
+    grid-template-rows: 1fr 1fr;
+    overflow: hidden;
   }
   .cs-block {
     padding: 28px 20px;
-    justify-content: flex-start;
+    /* Keep centering — do not override to flex-start */
+    justify-content: center;
+    overflow: hidden;
   }
   .cs-block + .cs-block {
     border-left: none;
     border-top: 1px solid rgba(255,255,255,0.08);
   }
+  .cs-block-inner { max-width: 100%; }
   .cs-tag { margin-bottom: 14px; }
   .cs-body { font-size: 15px; }
 
